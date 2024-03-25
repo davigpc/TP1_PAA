@@ -3,22 +3,30 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "grafo_listaAdj.h"
 
+typedef struct vertice
+{
+	int id;
+	int distancia;
+	int verticePai;
+} Vertice;
 
-typedef struct Heap {
-	int *arr;
-	int size;
-	int capacity;
+typedef struct Heap
+{
+	Vertice *naoVisitados;
+	int tamanho;
+	int capacidade;
 } Heap;
 
-Heap* createHeap(int capacity, int* nums);
+Heap *createHeap(int, Grafo *);
 
-void insert(Heap* h, int data);
+void insert(Heap *, int);
 
-int extractMin(Heap* h);
+Vertice extractMin(Heap *);
 
-void insertHelper(Heap* h, int index);
+void insertHelper(Heap *, int);
 
-void minHeapify(Heap* h, int index);
+void minHeapify(Heap *h, int);
 
 #endif
