@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 // Define a createHeap function
-Heap *createHeap(int capacidade)
+Heap *criaHeap(int capacidade)
 {
     // Allocating memory to Heap h
-    Heap *h = (Heap *)malloc(sizeof(Heap));
+    Heap *h = (Heap *)malloc(1 * sizeof(Heap));
 
     // set the values to size and capacidade
     h->tamanho = 0;
@@ -25,6 +25,7 @@ Heap *createHeap(int capacidade)
     }
 
     h->naoVisitados[0].distancia = 0;
+    h->naoVisitados[0].verticePai = -1;
 
     h->tamanho = i;
     i = (h->tamanho - 2) / 2;
@@ -100,6 +101,7 @@ Vertice extractMin(Heap *h)
 
     // Replace the deleted node with the last node
     h->naoVisitados[0] = h->naoVisitados[h->tamanho - 1];
+
     // Decrement the size of Heap
     h->tamanho--;
 
@@ -133,4 +135,23 @@ void printHeap(Heap *h)
         printf("%d ", h->naoVisitados[i]);
     }
     printf("\n");
+}
+
+void destroiHeap(Heap *h)
+{
+    free(h->naoVisitados);
+    free(h);
+}
+
+int pesquisaHeap(Heap *h, int id)
+{
+    for (int i = 0; i < h->tamanho; i++)
+    {
+        if (id == h->naoVisitados[i].id)
+        {
+            return i;
+        }
+
+        return -1;
+    }
 }

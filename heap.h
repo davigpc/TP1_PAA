@@ -19,7 +19,7 @@ typedef struct Heap
 	int capacidade;
 } Heap;
 
-Heap *createHeap(int, Grafo *);
+Heap *criaHeap(int);
 
 void insert(Heap *, int);
 
@@ -27,6 +27,10 @@ Vertice extractMin(Heap *);
 
 void insertHelper(Heap *, int);
 
-void minHeapify(Heap *h, int);
+void minHeapify(Heap *, int);
+
+void destroiHeap(Heap *);
+
+int pesquisaHeap(Heap *, int);
 
 #endif
