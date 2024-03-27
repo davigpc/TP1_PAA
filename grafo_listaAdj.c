@@ -21,7 +21,7 @@ Grafo *inicializaGrafo(int numVertices, int numArestas)
 
     grafo->listaAdj = (Apontador *)calloc(numVertices + 2, sizeof(Apontador));
 
-    //for num vert
+    // for num vert
 
     grafo->numArestas = numArestas;
 

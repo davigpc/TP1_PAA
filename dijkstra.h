@@ -8,5 +8,6 @@
 
 Vertice *criaVetorCaminho(int);
 int dijkstra(Grafo *);
+int pesquisaCaminho(Vertice *, int);
 
 #endif

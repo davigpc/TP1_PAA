@@ -8,7 +8,7 @@
 typedef struct vertice
 {
 	int id;
-	long int distancia;
+	int distancia;
 	int verticePai;
 } Vertice;
 
@@ -32,5 +32,7 @@ void minHeapify(Heap *, int);
 void destroiHeap(Heap *);
 
 int pesquisaHeap(Heap *, int);
+
+void imprimeHeap(Heap *);
 
 #endif

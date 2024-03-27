@@ -12,10 +12,14 @@ int main(int argc, char *argv[2])
     int caminhoTotal;
 
     Grafo *grafo = leGrafo(argv[1], numMenoresCaminhos);
+
+    // Heap *heap = criaHeap(grafo->numVertices);
+    // imprimeHeap(heap);
     imprimeGrafo(argv[2], grafo);
     caminhoTotal = dijkstra(grafo);
+    printf("%d \n", caminhoTotal);
+
     liberaGrafo(grafo);
-    
 
     return 0;
 }

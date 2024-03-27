@@ -4,7 +4,7 @@
 
 Vertice *criaVetorCaminho(int numVertices)
 {
-    return (Vertice *)malloc(numVertices * sizeof(Vertice));
+    return (Vertice *)calloc(numVertices, sizeof(Vertice));
 }
 
 int dijkstra(Grafo *grafo)
@@ -48,17 +48,34 @@ int dijkstra(Grafo *grafo)
                 q = q->prox;
             }
         }
-
+        minHeapify(heap, 0);
         indiceCaminho++;
     }
 
     while (caminho[indiceCaminho].verticePai != -1)
     {
         caminhoTotal += obtemPesoAresta(caminho[indiceCaminho].verticePai, caminho[indiceCaminho].id, grafo);
-        indiceCaminho = pesquisaHeap(heap, caminho[indiceCaminho].verticePai);
+        indiceCaminho = pesquisaCaminho(caminho, caminho[indiceCaminho].verticePai);
     }
 
     destroiHeap(heap);
 
     return caminhoTotal;
+}
+
+int pesquisaCaminho(Vertice *caminho, int id)
+{
+    Vertice *c = caminho;
+    int i = 0;
+    while (c)
+    {
+        if (id == c->id)
+        {
+            return i;
+        }
+        i++;
+        c++;
+    }
+
+    return -1;
 }

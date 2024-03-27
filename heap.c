@@ -20,14 +20,14 @@ Heap *criaHeap(int capacidade)
     for (i = 0; i < capacidade; i++)
     {
         h->naoVisitados[i].id = i + 1;
-        h->naoVisitados[i].distancia = 10000000001;
+        h->naoVisitados[i].distancia = 1000;
         h->naoVisitados[i].verticePai = 0;
     }
 
     h->naoVisitados[0].distancia = 0;
     h->naoVisitados[0].verticePai = -1;
 
-    h->tamanho = i+1;
+    h->tamanho = i;
     i = (h->tamanho - 2) / 2;
     while (i >= 0)
     {
@@ -152,8 +152,14 @@ int pesquisaHeap(Heap *h, int id)
         {
             return i;
         }
-
-        
     }
     return -1;
+}
+
+void imprimeHeap(Heap *h)
+{
+    for (int i = 0; i < h->tamanho; i++)
+    {
+        printf("%d  %d", h->naoVisitados[i].id, h->naoVisitados[i].distancia);
+    }
 }
