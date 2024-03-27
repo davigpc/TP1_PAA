@@ -13,8 +13,9 @@ int main(int argc, char *argv[2])
 
     Grafo *grafo = leGrafo(argv[1], numMenoresCaminhos);
     imprimeGrafo(argv[2], grafo);
-    liberaGrafo(grafo);
     caminhoTotal = dijkstra(grafo);
+    liberaGrafo(grafo);
+    
 
     return 0;
 }

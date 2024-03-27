@@ -11,6 +11,7 @@ int dijkstra(Grafo *grafo)
 {
     Heap *heap = criaHeap(grafo->numVertices);
     Vertice *caminho = criaVetorCaminho(grafo->numVertices);
+
     Vertice min;
     Apontador q;
     int indice;

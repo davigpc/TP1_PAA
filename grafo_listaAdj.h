@@ -16,6 +16,7 @@ typedef struct str_aresta
     int vdestino;
     Peso peso;
     struct str_aresta *prox;
+    
 } Aresta;
 
 typedef Aresta *Apontador;

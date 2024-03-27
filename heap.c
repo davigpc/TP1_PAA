@@ -27,11 +27,11 @@ Heap *criaHeap(int capacidade)
     h->naoVisitados[0].distancia = 0;
     h->naoVisitados[0].verticePai = -1;
 
-    h->tamanho = i;
+    h->tamanho = i+1;
     i = (h->tamanho - 2) / 2;
     while (i >= 0)
     {
-        Heapify(h, i);
+        minHeapify(h, i);
         i--;
     }
     return h;
@@ -58,7 +58,7 @@ void insertHelper(Heap *h, int index)
     }
 }
 
-void heapify(Heap *h, int index)
+void minHeapify(Heap *h, int index)
 {
     int esquerda = index * 2 + 1;
     int direita = index * 2 + 2;
@@ -87,7 +87,7 @@ void heapify(Heap *h, int index)
 
         // recursively calling for their child elements
         // to maintain min Heap
-        heapify(h, min);
+        minHeapify(h, min);
     }
 }
 
@@ -107,7 +107,7 @@ Vertice extractMin(Heap *h)
 
     // Call minHeapify_top_down for 0th index
     // to maintain the Heap property
-    Heapify(h, 0);
+    minHeapify(h, 0);
     return deleteItem;
 }
 
@@ -132,7 +132,7 @@ void printHeap(Heap *h)
 
     for (int i = 0; i < h->tamanho; i++)
     {
-        printf("%d ", h->naoVisitados[i]);
+        printf("%d ", h->naoVisitados[i].id);
     }
     printf("\n");
 }
@@ -145,13 +145,15 @@ void destroiHeap(Heap *h)
 
 int pesquisaHeap(Heap *h, int id)
 {
-    for (int i = 0; i < h->tamanho; i++)
+    int i;
+    for (i = 0; i < h->tamanho; i++)
     {
         if (id == h->naoVisitados[i].id)
         {
             return i;
         }
 
-        return -1;
+        
     }
+    return -1;
 }

@@ -21,6 +21,8 @@ Grafo *inicializaGrafo(int numVertices, int numArestas)
 
     grafo->listaAdj = (Apontador *)calloc(numVertices + 2, sizeof(Apontador));
 
+    //for num vert
+
     grafo->numArestas = numArestas;
 
     // calloc ja inicializa com zeros.... nao precisa inicializar grafo->listaAdj[i]
@@ -252,7 +254,7 @@ Grafo *leGrafo(char *nomearq, int *numMenoresCaminhos)
     {
         if (fscanf(fp, "%d %d %d", &v1, &v2, &peso) != 3)
         {
-            fprintf(stderr, "ERRO: numero de argumentos de entrada invalido.\n");
+            fprintf(stderr, "ERRO 1: numero de argumentos de entrada invalido.\n");
         }
         insereAresta(v1, v2, peso, grafo);
     }

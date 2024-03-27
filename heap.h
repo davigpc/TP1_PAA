@@ -8,7 +8,7 @@
 typedef struct vertice
 {
 	int id;
-	int distancia;
+	long int distancia;
 	int verticePai;
 } Vertice;
 
@@ -21,7 +21,7 @@ typedef struct Heap
 
 Heap *criaHeap(int);
 
-void insert(Heap *, int);
+void insert(Heap *, Vertice);
 
 Vertice extractMin(Heap *);
 
