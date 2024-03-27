@@ -79,3 +79,21 @@ int pesquisaCaminho(Vertice *caminho, int id)
 
     return -1;
 }
+
+void imprimeMenorCaminho(char *nomearq, Grafo *grafo)
+{
+    FILE *fp;
+    int menorCaminho;
+
+    menorCaminho = dijkstra(grafo);
+
+    fp = fopen(nomearq, "w");
+
+    if (fp == NULL)
+    {
+        fprintf(stderr, "ERRO: falha ao abrir arquivo.\n");
+        return;
+    }
+
+    fprintf(fp, "%d \n", menorCaminho);
+}

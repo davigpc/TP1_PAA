@@ -9,5 +9,6 @@
 Vertice *criaVetorCaminho(int);
 int dijkstra(Grafo *);
 int pesquisaCaminho(Vertice *, int);
+void imprimeMenorCaminho(char *, Grafo *);
 
 #endif
