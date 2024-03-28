@@ -60,6 +60,8 @@ int dijkstra(Grafo *grafo)
 
     destroiHeap(heap);
 
+    free(caminho);
+
     return caminhoTotal;
 }
 
