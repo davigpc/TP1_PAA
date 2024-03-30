@@ -70,6 +70,9 @@ int dijkstra(Grafo *grafo)
 
     destroiHeap(heap);
 
+    free(caminho->vertices);
+    free(caminho);
+
     menorCaminho->pesoCaminho = pesoCaminho;
     organizaCaminho(menorCaminho);
 
