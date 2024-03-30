@@ -2,27 +2,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Vertice *criaVetorCaminho(int numVertices)
+Caminho *criaVetorCaminho(int numVertices)
 {
-    return (Vertice *)calloc(numVertices, sizeof(Vertice));
+    Caminho *caminho = (Caminho *)calloc(1, sizeof(Caminho));
+    caminho->vertices = (Vertice *)calloc(numVertices, sizeof(Vertice));
+    caminho->tamCaminho = 0;
+    return caminho;
 }
 
 int dijkstra(Grafo *grafo)
 {
     Heap *heap = criaHeap(grafo->numVertices);
-    Vertice *caminho = criaVetorCaminho(grafo->numVertices);
+    Caminho *caminho = criaVetorCaminho(grafo->numVertices);
+    Caminho *menorCaminho = criaVetorCaminho(grafo->numVertices);
 
     Vertice min;
     Apontador q;
-    int indice;
+    int indiceHeap;
     int indiceCaminho = 0;
-    int caminhoTotal = 0;
+    Peso pesoCaminho = 0;
 
     while (heap->tamanho >= 1)
     {
         min = extractMin(heap);
 
-        caminho[indiceCaminho] = min;
+        caminho->vertices[indiceCaminho] = min;
+        caminho->tamCaminho++;
 
         if (min.id == grafo->numVertices)
         {
@@ -32,18 +37,18 @@ int dijkstra(Grafo *grafo)
         q = grafo->listaAdj[min.id];
         while (q != NULL)
         {
-            indice = pesquisaHeap(heap, q->vdestino);
-            if (indice == -1)
+            indiceHeap = pesquisaHeap(heap, q->vdestino);
+            if (indiceHeap == -1)
             {
                 q = q->prox;
             }
 
             else
             {
-                if (q->peso + min.distancia < heap->naoVisitados[indice].distancia)
+                if (q->peso + min.distancia < heap->naoVisitados[indiceHeap].distancia)
                 {
-                    heap->naoVisitados[indice].distancia = q->peso + min.distancia;
-                    heap->naoVisitados[indice].verticePai = min.id;
+                    heap->naoVisitados[indiceHeap].distancia = q->peso + min.distancia;
+                    heap->naoVisitados[indiceHeap].verticePai = min.id;
                 }
                 q = q->prox;
             }
@@ -52,17 +57,23 @@ int dijkstra(Grafo *grafo)
         indiceCaminho++;
     }
 
-    while (caminho[indiceCaminho].verticePai != -1)
+    int i = 0;
+    while (caminho->vertices[indiceCaminho].verticePai != -1)
     {
-        caminhoTotal += obtemPesoAresta(caminho[indiceCaminho].verticePai, caminho[indiceCaminho].id, grafo);
-        indiceCaminho = pesquisaCaminho(caminho, caminho[indiceCaminho].verticePai);
+        menorCaminho->vertices[i] = caminho->vertices[indiceCaminho];
+        pesoCaminho += obtemPesoAresta(caminho->vertices[indiceCaminho].verticePai, caminho->vertices[indiceCaminho].id, grafo);
+        indiceCaminho = caminho->vertices[indiceCaminho].idVerticePai;
+        i++;
     }
+    menorCaminho->vertices[i] = caminho->vertices[indiceCaminho];
+    menorCaminho->tamCaminho = i + 1;
 
     destroiHeap(heap);
 
-    free(caminho);
+    menorCaminho->pesoCaminho = pesoCaminho;
+    organizaCaminho(menorCaminho);
 
-    return caminhoTotal;
+    return menorCaminho;
 }
 
 int pesquisaCaminho(Vertice *caminho, int id)
@@ -82,20 +93,35 @@ int pesquisaCaminho(Vertice *caminho, int id)
     return -1;
 }
 
-void imprimeMenorCaminho(char *nomearq, Grafo *grafo)
+void organizaCaminho(Caminho *caminnho)
 {
-    FILE *fp;
-    int menorCaminho;
-
-    menorCaminho = dijkstra(grafo);
-
-    fp = fopen(nomearq, "w");
-
-    if (fp == NULL)
+    int inicio = 0;
+    int fim = caminnho->tamCaminho - 1;
+    Vertice temp;
+    while (inicio < fim)
     {
-        fprintf(stderr, "ERRO: falha ao abrir arquivo.\n");
-        return;
+        temp = caminnho->vertices[inicio];
+        caminnho->vertices[inicio] = caminnho->vertices[fim];
+        caminnho->vertices[fim] = temp;
+        inicio++;
+        fim++;
     }
-
-    fprintf(fp, "%d \n", menorCaminho);
 }
+
+// void imprimeMenorCaminho(char *nomearq, Grafo *grafo)
+// {
+//     FILE *fp;
+//     int menorCaminho;
+
+//     menorCaminho = dijkstra(grafo);
+
+//     fp = fopen(nomearq, "w");
+
+//     if (fp == NULL)
+//     {
+//         fprintf(stderr, "ERRO: falha ao abrir arquivo.\n");
+//         return;
+//     }
+
+//     fprintf(fp, "%d \n", menorCaminho);
+// }

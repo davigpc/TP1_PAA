@@ -6,8 +6,15 @@
 #include "grafo_listaAdj.h"
 #include "heap.h"
 
-Vertice *criaVetorCaminho(int);
-int dijkstra(Grafo *);
+typedef struct
+{
+    Vertice *vertices;
+    int tamCaminho;
+    Peso pesoCaminho;
+} Caminho;
+
+Caminho criaVetorCaminho(int);
+Caminho dijkstra(Grafo *);
 int pesquisaCaminho(Vertice *, int);
 void imprimeMenorCaminho(char *, Grafo *);
 

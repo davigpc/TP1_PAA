@@ -12,7 +12,7 @@
     vertices vao de 1 a numvertices.
 */
 
-Grafo *inicializaGrafo(int numVertices, int numArestas)
+Grafo *inicializaGrafo(int numVertices, int numArestas, int numMenoresCaminhos)
 {
 
     Grafo *grafo = (Grafo *)calloc(1, sizeof(Grafo));
@@ -24,6 +24,8 @@ Grafo *inicializaGrafo(int numVertices, int numArestas)
     // for num vert
 
     grafo->numArestas = numArestas;
+
+    grafo->numMenoresCaminhos = numMenoresCaminhos;
 
     // calloc ja inicializa com zeros.... nao precisa inicializar grafo->listaAdj[i]
 
@@ -227,10 +229,10 @@ void imprimeGrafo(char *nomearq, Grafo *grafo)
     }
 }
 
-Grafo *leGrafo(char *nomearq, int *numMenoresCaminhos)
+Grafo *leGrafo(char *nomearq)
 {
     FILE *fp;
-    int numVertices, numArestas;
+    int numVertices, numArestas, numMenoresCaminhos;
     int v1, v2;
     Peso peso;
 
@@ -242,13 +244,13 @@ Grafo *leGrafo(char *nomearq, int *numMenoresCaminhos)
         return (NULL);
     }
 
-    if (fscanf(fp, "%d %d %d", &numVertices, &numArestas, numMenoresCaminhos) != 3)
+    if (fscanf(fp, "%d %d %d", &numVertices, &numArestas, &numMenoresCaminhos) != 3)
     {
         fprintf(stderr, "ERRO: numero de argumentos de entrada invalido.\n");
         return (NULL);
     }
 
-    Grafo *grafo = inicializaGrafo(numVertices, numArestas);
+    Grafo *grafo = inicializaGrafo(numVertices, numArestas, numMenoresCaminhos);
 
     for (int i = 1; i <= grafo->numArestas; i++)
     {

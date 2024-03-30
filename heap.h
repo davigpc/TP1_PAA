@@ -10,6 +10,7 @@ typedef struct vertice
 	int id;
 	int distancia;
 	int verticePai;
+	int idVerticePai;
 } Vertice;
 
 typedef struct Heap

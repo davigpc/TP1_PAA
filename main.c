@@ -6,10 +6,7 @@
 
 int main(int argc, char *argv[2])
 {
-    int *numMenoresCaminhos;
-    numMenoresCaminhos = (int *)malloc(1 * sizeof(int));
-
-    Grafo *grafo = leGrafo(argv[1], numMenoresCaminhos);
+    Grafo *grafo = leGrafo(argv[1]);
 
     imprimeMenorCaminho(argv[2], grafo);
 

@@ -16,7 +16,7 @@ typedef struct str_aresta
     int vdestino;
     Peso peso;
     struct str_aresta *prox;
-    
+
 } Aresta;
 
 typedef Aresta *Apontador;
@@ -27,10 +27,11 @@ typedef struct
     Apontador *listaAdj;
     int numVertices;
     int numArestas;
+    int numMenoresCaminhos;
 
 } Grafo;
 
-Grafo *inicializaGrafo(int, int);
+Grafo *inicializaGrafo(int, int, int);
 
 bool verificaValidadeVertice(int, Grafo *);
 
@@ -52,7 +53,7 @@ void liberaGrafo(Grafo *);
 
 void imprimeGrafo(char *, Grafo *);
 
-Grafo *leGrafo(char *, int *);
+Grafo *leGrafo(char *);
 
 Peso obtemPesoAresta(int, int, Grafo *);
 
