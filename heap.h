@@ -20,7 +20,7 @@ typedef struct Heap
 	int capacidade;
 } Heap;
 
-Heap *criaHeap(int);
+Heap *criaHeap(int, int);
 
 void insert(Heap *, Vertice);
 

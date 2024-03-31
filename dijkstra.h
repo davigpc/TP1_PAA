@@ -14,8 +14,9 @@ typedef struct
 } Caminho;
 
 Caminho criaVetorCaminho(int);
-Caminho dijkstra(Grafo *);
+Caminho dijkstra(Grafo *, int);
 int pesquisaCaminho(Vertice *, int);
-void imprimeMenorCaminho(char *, Grafo *);
+Caminho organizaCaminho(Caminho);
+// void imprimeMenorCaminho(char *, Grafo *);
 
 #endif

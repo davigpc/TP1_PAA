@@ -88,7 +88,7 @@ void insereAresta(int v1, int v2, Peso peso, Grafo *grafo)
     grafo->listaAdj[v1] = p;
 }
 
-bool removeArestaObtendoPeso(int v1, int v2, Peso *peso, Grafo *grafo)
+bool removeAresta(int v1, int v2, Grafo *grafo)
 {
 
     Apontador q, anterior;
@@ -115,7 +115,7 @@ bool removeArestaObtendoPeso(int v1, int v2, Peso *peso, Grafo *grafo)
         else
         {
             anterior->prox = q->prox;
-            *peso = q->peso;
+            //*peso = q->peso;
             free(q);
             q = NULL;
             return true;

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 // Define a createHeap function
-Heap *criaHeap(int capacidade)
+Heap *criaHeap(int capacidade, int fonte)
 {
     // Allocating memory to Heap h
     Heap *h = (Heap *)malloc(1 * sizeof(Heap));
@@ -20,12 +20,12 @@ Heap *criaHeap(int capacidade)
     for (i = 0; i < capacidade; i++)
     {
         h->naoVisitados[i].id = i + 1;
-        h->naoVisitados[i].distancia = 1000;
+        h->naoVisitados[i].distancia = PESO_MAXIMO;
         h->naoVisitados[i].verticePai = 0;
     }
 
-    h->naoVisitados[0].distancia = 0;
-    h->naoVisitados[0].verticePai = -1;
+    h->naoVisitados[fonte - 1].distancia = 0;
+    h->naoVisitados[fonte - 1].verticePai = -1;
 
     h->tamanho = i;
     i = (h->tamanho - 2) / 2;

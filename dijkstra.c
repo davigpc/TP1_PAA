@@ -2,19 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Caminho *criaVetorCaminho(int numVertices)
+Caminho criaVetorCaminho(int numVertices)
 {
-    Caminho *caminho = (Caminho *)calloc(1, sizeof(Caminho));
-    caminho->vertices = (Vertice *)calloc(numVertices, sizeof(Vertice));
-    caminho->tamCaminho = 0;
+    Caminho caminho;
+    caminho.vertices = (Vertice *)calloc(numVertices, sizeof(Vertice));
+    caminho.tamCaminho = 0;
     return caminho;
 }
 
-int dijkstra(Grafo *grafo)
+Caminho dijkstra(Grafo *grafo, int fonte)
 {
-    Heap *heap = criaHeap(grafo->numVertices);
-    Caminho *caminho = criaVetorCaminho(grafo->numVertices);
-    Caminho *menorCaminho = criaVetorCaminho(grafo->numVertices);
+    Heap *heap = criaHeap(grafo->numVertices, fonte);
+    Caminho caminho = criaVetorCaminho(grafo->numVertices);
+    Caminho menorCaminho = criaVetorCaminho(grafo->numVertices);
 
     Vertice min;
     Apontador q;
@@ -26,8 +26,8 @@ int dijkstra(Grafo *grafo)
     {
         min = extractMin(heap);
 
-        caminho->vertices[indiceCaminho] = min;
-        caminho->tamCaminho++;
+        caminho.vertices[indiceCaminho] = min;
+        caminho.tamCaminho++;
 
         if (min.id == grafo->numVertices)
         {
@@ -58,23 +58,28 @@ int dijkstra(Grafo *grafo)
     }
 
     int i = 0;
-    while (caminho->vertices[indiceCaminho].verticePai != -1)
+
+    if (caminho.vertices[indiceCaminho].verticePai == 0)
     {
-        menorCaminho->vertices[i] = caminho->vertices[indiceCaminho];
-        pesoCaminho += obtemPesoAresta(caminho->vertices[indiceCaminho].verticePai, caminho->vertices[indiceCaminho].id, grafo);
-        indiceCaminho = caminho->vertices[indiceCaminho].idVerticePai;
+        return menorCaminho;
+    }
+
+    while (caminho.vertices[indiceCaminho].verticePai != -1)
+    {
+        menorCaminho.vertices[i] = caminho.vertices[indiceCaminho];
+        pesoCaminho += obtemPesoAresta(caminho.vertices[indiceCaminho].verticePai, caminho.vertices[indiceCaminho].id, grafo);
+        indiceCaminho = caminho.vertices[indiceCaminho].idVerticePai;
         i++;
     }
-    menorCaminho->vertices[i] = caminho->vertices[indiceCaminho];
-    menorCaminho->tamCaminho = i + 1;
+    menorCaminho.vertices[i] = caminho.vertices[indiceCaminho];
+    menorCaminho.tamCaminho = i + 1;
 
     destroiHeap(heap);
 
-    free(caminho->vertices);
-    free(caminho);
+    free(caminho.vertices);
 
-    menorCaminho->pesoCaminho = pesoCaminho;
-    organizaCaminho(menorCaminho);
+    menorCaminho.pesoCaminho = pesoCaminho;
+    menorCaminho = organizaCaminho(menorCaminho);
 
     return menorCaminho;
 }
@@ -96,19 +101,21 @@ int pesquisaCaminho(Vertice *caminho, int id)
     return -1;
 }
 
-void organizaCaminho(Caminho *caminnho)
+Caminho organizaCaminho(Caminho caminho)
 {
     int inicio = 0;
-    int fim = caminnho->tamCaminho - 1;
+    int fim = caminho.tamCaminho - 1;
     Vertice temp;
     while (inicio < fim)
     {
-        temp = caminnho->vertices[inicio];
-        caminnho->vertices[inicio] = caminnho->vertices[fim];
-        caminnho->vertices[fim] = temp;
+        temp = caminho.vertices[inicio];
+        caminho.vertices[inicio] = caminho.vertices[fim];
+        caminho.vertices[fim] = temp;
         inicio++;
         fim++;
     }
+
+    return caminho;
 }
 
 // void imprimeMenorCaminho(char *nomearq, Grafo *grafo)

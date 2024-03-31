@@ -7,6 +7,7 @@
 
 #define VERTICE_INVALIDO NULL
 #define ARESTA_NULA -1
+#define PESO_MAXIMO 9999
 
 typedef int Peso;
 
@@ -41,7 +42,7 @@ Apontador proxListaAdj(int, Grafo *, Aresta *);
 
 void insereAresta(int, int, Peso, Grafo *);
 
-bool removeArestaObtendoPeso(int, int, Peso *, Grafo *);
+bool removeAresta(int, int, Grafo *);
 
 Apontador primeiroListaAdj(int, Grafo *);
 
