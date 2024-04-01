@@ -13,10 +13,8 @@ typedef struct
     Peso pesoCaminho;
 } Caminho;
 
-Caminho criaVetorCaminho(int);
-Caminho dijkstra(Grafo *, int);
-int pesquisaCaminho(Vertice *, int);
-Caminho organizaCaminho(Caminho);
-// void imprimeMenorCaminho(char *, Grafo *);
+Caminho *criaVetorCaminho(int);
+Caminho *dijkstra(Grafo *, int);
+Caminho *organizaCaminho(Caminho *);
 
 #endif

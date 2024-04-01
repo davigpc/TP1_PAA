@@ -2,19 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Caminho criaVetorCaminho(int numVertices)
+Caminho *criaVetorCaminho(int numVertices)
 {
-    Caminho caminho;
-    caminho.vertices = (Vertice *)calloc(numVertices, sizeof(Vertice));
-    caminho.tamCaminho = 0;
+    Caminho *caminho = (Caminho *)malloc(1 * sizeof(Caminho));
+    caminho->vertices = (Vertice *)calloc(numVertices, sizeof(Vertice));
+    caminho->tamCaminho = 0;
     return caminho;
 }
 
-Caminho dijkstra(Grafo *grafo, int fonte)
+Caminho *dijkstra(Grafo *grafo, int fonte)
 {
     Heap *heap = criaHeap(grafo->numVertices, fonte);
-    Caminho caminho = criaVetorCaminho(grafo->numVertices);
-    Caminho menorCaminho = criaVetorCaminho(grafo->numVertices);
+    Caminho *caminho = criaVetorCaminho(grafo->numVertices);
+    Caminho *menorCaminho = criaVetorCaminho(grafo->numVertices);
 
     Vertice min;
     Apontador q;
@@ -26,8 +26,8 @@ Caminho dijkstra(Grafo *grafo, int fonte)
     {
         min = extractMin(heap);
 
-        caminho.vertices[indiceCaminho] = min;
-        caminho.tamCaminho++;
+        caminho->vertices[indiceCaminho] = min;
+        caminho->tamCaminho++;
 
         if (min.id == grafo->numVertices)
         {
@@ -59,79 +59,45 @@ Caminho dijkstra(Grafo *grafo, int fonte)
 
     int i = 0;
 
-    if (caminho.vertices[indiceCaminho].verticePai == 0)
+    if (caminho->vertices[indiceCaminho].verticePai == 0)
     {
         return menorCaminho;
     }
 
-    while (caminho.vertices[indiceCaminho].verticePai != -1)
+    while (caminho->vertices[indiceCaminho].verticePai != -1)
     {
-        menorCaminho.vertices[i] = caminho.vertices[indiceCaminho];
-        pesoCaminho += obtemPesoAresta(caminho.vertices[indiceCaminho].verticePai, caminho.vertices[indiceCaminho].id, grafo);
-        indiceCaminho = caminho.vertices[indiceCaminho].idVerticePai;
+        menorCaminho->vertices[i] = caminho->vertices[indiceCaminho];
+        pesoCaminho += obtemPesoAresta(caminho->vertices[indiceCaminho].verticePai, caminho->vertices[indiceCaminho].id, grafo);
+        indiceCaminho = caminho->vertices[indiceCaminho].idVerticePai;
         i++;
     }
-    menorCaminho.vertices[i] = caminho.vertices[indiceCaminho];
-    menorCaminho.tamCaminho = i + 1;
+    menorCaminho->vertices[i] = caminho->vertices[indiceCaminho];
+    menorCaminho->tamCaminho = i + 1;
 
     destroiHeap(heap);
 
-    free(caminho.vertices);
+    free(caminho->vertices);
+    free(caminho);
 
-    menorCaminho.pesoCaminho = pesoCaminho;
+    menorCaminho->pesoCaminho = pesoCaminho;
     menorCaminho = organizaCaminho(menorCaminho);
 
     return menorCaminho;
 }
 
-int pesquisaCaminho(Vertice *caminho, int id)
-{
-    Vertice *c = caminho;
-    int i = 0;
-    while (c)
-    {
-        if (id == c->id)
-        {
-            return i;
-        }
-        i++;
-        c++;
-    }
-
-    return -1;
-}
-
-Caminho organizaCaminho(Caminho caminho)
+Caminho *organizaCaminho(Caminho *caminho)
 {
     int inicio = 0;
-    int fim = caminho.tamCaminho - 1;
+    int fim = caminho->tamCaminho - 1;
     Vertice temp;
     while (inicio < fim)
     {
-        temp = caminho.vertices[inicio];
-        caminho.vertices[inicio] = caminho.vertices[fim];
-        caminho.vertices[fim] = temp;
+        temp = caminho->vertices[inicio];
+        caminho->vertices[inicio] = caminho->vertices[fim];
+        caminho->vertices[fim] = temp;
         inicio++;
         fim++;
     }
 
     return caminho;
 }
-
-// void imprimeMenorCaminho(char *nomearq, Grafo *grafo)
-// {
-//     FILE *fp;
-//     int menorCaminho;
-
-//     menorCaminho = dijkstra(grafo);
-
-//     fp = fopen(nomearq, "w");
-
-//     if (fp == NULL)
-//     {
-//         fprintf(stderr, "ERRO: falha ao abrir arquivo.\n");
-//         return;
-//     }
-
-//     fprintf(fp, "%d \n", menorCaminho);
-// }

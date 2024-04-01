@@ -57,7 +57,7 @@ bool listaAdjVazia(int v, Grafo *grafo)
     return (grafo->listaAdj[v] == NULL);
 }
 
-Apontador proxListaAdj(int v, Grafo *grafo, Aresta *atual)
+Apontador proxListaAdj(int v, Grafo *grafo, Apontador atual)
 {
 
     if (atual == NULL)

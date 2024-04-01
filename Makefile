@@ -3,8 +3,8 @@ all: programa
 run: programa
 		@./programa
 
-programa: main.o grafo_listaAdj.o heap.o dijkstra.o
-		gcc -g main.o grafo_listaAdj.o heap.o dijkstra.o -o programa
+programa: main.o grafo_listaAdj.o heap.o dijkstra.o yen.o
+		gcc -g main.o grafo_listaAdj.o heap.o dijkstra.o yen.o -o programa
 
 
 main.o: main.c
@@ -18,6 +18,9 @@ heap.o: heap.c heap.h
 
 dijkstra.o: dijkstra.c dijkstra.h
 		gcc -c dijkstra.c -g
+
+yen.o: yen.c yen.h
+		gcc -c yen.c -g
 
 clean:
 		rm *.o programa*

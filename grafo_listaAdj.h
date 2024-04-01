@@ -38,7 +38,7 @@ bool verificaValidadeVertice(int, Grafo *);
 
 bool listaAdjVazia(int, Grafo *);
 
-Apontador proxListaAdj(int, Grafo *, Aresta *);
+Apontador proxListaAdj(int, Grafo *, Apontador);
 
 void insereAresta(int, int, Peso, Grafo *);
 
