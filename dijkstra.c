@@ -96,7 +96,7 @@ Caminho *organizaCaminho(Caminho *caminho)
         caminho->vertices[inicio] = caminho->vertices[fim];
         caminho->vertices[fim] = temp;
         inicio++;
-        fim++;
+        fim--;
     }
 
     return caminho;

@@ -76,7 +76,7 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
                     candidatos->caminhos[candidatos->qtdCaminhos]->pesoCaminho = caminhoTotal->pesoCaminho;
                 }
             }
-
+            imprimeGrafo("saidas_teste.txt", grafo);
             liberaGrafo(grafo);
             grafo = leGrafo(nomearqLeitura);
         }
@@ -181,26 +181,21 @@ Caminho *juntaCaminhos(Grafo *grafo, Caminho *caminhoRaiz, Caminho *caminhoSpur,
     {
         novoCaminho->vertices[i] = caminhoRaiz->vertices[i];
 
-        if (i > 0)
-        {
-            pesoCaminho += obtemPesoAresta(caminhoRaiz->vertices[i].idVerticePai, caminhoRaiz->vertices[i].id, grafo);
-        }
-
         if (caminhoRaiz->vertices[i].id == destino)
         {
             novoCaminho->pesoCaminho = pesoCaminho;
-            novoCaminho->tamCaminho = i + 1;
             break;
         }
+
     }
 
     for (int i = caminhoRaiz->tamCaminho; i < caminhoRaiz->tamCaminho + caminhoSpur->tamCaminho - 1; i++)
     {
         novoCaminho->vertices[i] = caminhoSpur->vertices[i];
-        pesoCaminho += obtemPesoAresta(caminhoSpur->vertices[i].idVerticePai, caminhoSpur->vertices[i].id, grafo);
-        novoCaminho->tamCaminho = i + 1;
     }
 
+    novoCaminho->tamCaminho = caminhoRaiz->tamCaminho + caminhoSpur->tamCaminho - 1;
+    novoCaminho->pesoCaminho = caminhoRaiz->pesoCaminho + caminhoSpur->pesoCaminho;
     return novoCaminho;
 }
 
@@ -256,4 +251,6 @@ void imprimeMenoresCaminhos(char *nomearqLeitura, char *nomearqEscrita, Grafo *g
         fprintf(fp, "%d ", menoresCaminhos->caminhos[i]->pesoCaminho);
     }
     fprintf(fp, "\n");
+
+    fclose(fp);
 }

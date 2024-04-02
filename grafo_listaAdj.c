@@ -260,7 +260,7 @@ Grafo *leGrafo(char *nomearq)
         }
         insereAresta(v1, v2, peso, grafo);
     }
-
+    fclose(fp);
     return grafo;
 }
 

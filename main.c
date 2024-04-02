@@ -11,7 +11,7 @@ int main(int argc, char *argv[2])
 
     imprimeMenoresCaminhos(argv[1], argv[2], grafo);
 
-    liberaGrafo(grafo);
+    //liberaGrafo(grafo);
 
     return 0;
 }
