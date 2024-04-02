@@ -49,6 +49,7 @@ Caminho *dijkstra(Grafo *grafo, int fonte)
                 {
                     heap->naoVisitados[indiceHeap].distancia = q->peso + min.distancia;
                     heap->naoVisitados[indiceHeap].verticePai = min.id;
+                    heap->naoVisitados[indiceHeap].idVerticePai = indiceCaminho;
                 }
                 q = q->prox;
             }

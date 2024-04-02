@@ -33,4 +33,6 @@ bool existeCaminhoCandidato(Caminhos *, Caminho *, Grafo *);
 
 void imprimeMenoresCaminhos(char *, char *, Grafo *);
 
+void removePrimeiroCandidato(Caminhos *);
+
 #endif

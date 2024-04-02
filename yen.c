@@ -18,6 +18,7 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
     Caminho *caminhoRaiz;
     Caminho *caminhoSpur;
     Caminho *caminhoTotal;
+    Caminho *menorCaminho;
 
     for (int i = 0; i < grafo->numMenoresCaminhos; i++)
     {
@@ -68,12 +69,14 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
                 {
                     if (caminhoTotal->pesoCaminho < candidatos->caminhos[grafo->numMenoresCaminhos - 1]->pesoCaminho)
                     {
-                        candidatos->caminhos[grafo->numMenoresCaminhos - 1]->pesoCaminho = caminhoTotal->pesoCaminho;
+                        candidatos->caminhos[grafo->numMenoresCaminhos - 1] = caminhoTotal;
+                        candidatos->qtdCaminhos++;
                     }
                 }
                 else
                 {
-                    candidatos->caminhos[candidatos->qtdCaminhos]->pesoCaminho = caminhoTotal->pesoCaminho;
+                    candidatos->caminhos[candidatos->qtdCaminhos] = caminhoTotal;
+                    candidatos->qtdCaminhos++;
                 }
             }
             imprimeGrafo("saidas_teste.txt", grafo);
@@ -88,9 +91,14 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
 
         ordenaCandidatos(candidatos);
 
+        menorCaminho = candidatos->caminhos[0];
         menoresCaminhos->caminhos[i] = candidatos->caminhos[0];
         menoresCaminhos->qtdCaminhos++;
+
+        removePrimeiroCandidato(candidatos);
     }
+
+    liberaGrafo(grafo);
 
     return menoresCaminhos;
 }
@@ -108,7 +116,7 @@ Caminho *copiaCaminho(Grafo *grafo, Caminho *caminhoOriginal, int destino)
 
         if (i > 0) // o primeiro nao tem vertice pai
         {
-            pesoCaminho += obtemPesoAresta(caminhoOriginal->vertices[i].idVerticePai, caminhoOriginal->vertices[i].id, grafo);
+            pesoCaminho += obtemPesoAresta(caminhoOriginal->vertices[i].verticePai, caminhoOriginal->vertices[i].id, grafo);
         }
 
         if (caminhoOriginal->vertices[i].id == destino)
@@ -186,7 +194,6 @@ Caminho *juntaCaminhos(Grafo *grafo, Caminho *caminhoRaiz, Caminho *caminhoSpur,
             novoCaminho->pesoCaminho = pesoCaminho;
             break;
         }
-
     }
 
     for (int i = caminhoRaiz->tamCaminho; i < caminhoRaiz->tamCaminho + caminhoSpur->tamCaminho - 1; i++)
@@ -253,4 +260,13 @@ void imprimeMenoresCaminhos(char *nomearqLeitura, char *nomearqEscrita, Grafo *g
     fprintf(fp, "\n");
 
     fclose(fp);
+}
+
+void removePrimeiroCandidato(Caminhos *candidatos)
+{
+    for (int b = 0; b < candidatos->qtdCaminhos - 1; b++)
+    {
+        candidatos->caminhos[b] = candidatos->caminhos[b + 1];
+    }
+    candidatos->qtdCaminhos--;
 }
