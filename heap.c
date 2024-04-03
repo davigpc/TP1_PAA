@@ -160,6 +160,6 @@ void imprimeHeap(Heap *h)
 {
     for (int i = 0; i < h->tamanho; i++)
     {
-        printf("%d  %d", h->naoVisitados[i].id, h->naoVisitados[i].distancia);
+        printf("%d  %lld", h->naoVisitados[i].id, h->naoVisitados[i].distancia);
     }
 }

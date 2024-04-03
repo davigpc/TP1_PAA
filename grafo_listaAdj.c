@@ -254,7 +254,7 @@ Grafo *leGrafo(char *nomearq)
 
     for (int i = 1; i <= grafo->numArestas; i++)
     {
-        if (fscanf(fp, "%d %d %d", &v1, &v2, &peso) != 3)
+        if (fscanf(fp, "%d %d %lld", &v1, &v2, &peso) != 3)
         {
             fprintf(stderr, "ERRO 1: numero de argumentos de entrada invalido.\n");
         }

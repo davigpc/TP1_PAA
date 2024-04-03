@@ -35,4 +35,6 @@ void imprimeMenoresCaminhos(char *, char *, Grafo *);
 
 void removePrimeiroCandidato(Caminhos *);
 
+void imprimeCandidatos(FILE *, Caminhos *);
+
 #endif

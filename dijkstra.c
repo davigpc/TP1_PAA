@@ -62,7 +62,8 @@ Caminho *dijkstra(Grafo *grafo, int fonte)
 
     if (caminho->vertices[indiceCaminho].verticePai == 0)
     {
-        return menorCaminho;
+        free(caminho);
+        return NULL;
     }
 
     while (caminho->vertices[indiceCaminho].verticePai != -1)

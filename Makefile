@@ -13,13 +13,13 @@ main.o: main.c
 grafo_listaAdj.o: grafo_listaAdj.c grafo_listaAdj.h
 		gcc -c grafo_listaAdj.c -g
 
-heap.o: heap.c heap.h
+heap.o: heap.c heap.h grafo_listaAdj.h
 		gcc -c heap.c -g
 
-dijkstra.o: dijkstra.c dijkstra.h
+dijkstra.o: dijkstra.c dijkstra.h heap.h grafo_listaAdj.h
 		gcc -c dijkstra.c -g
 
-yen.o: yen.c yen.h
+yen.o: yen.c yen.h dijkstra.h heap.h grafo_listaAdj.h
 		gcc -c yen.c -g
 
 clean:

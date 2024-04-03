@@ -7,9 +7,9 @@
 
 #define VERTICE_INVALIDO NULL
 #define ARESTA_NULA -1
-#define PESO_MAXIMO 9999
+#define PESO_MAXIMO 10000000001
 
-typedef int Peso;
+typedef long long int Peso;
 
 typedef struct str_aresta
 {

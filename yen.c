@@ -18,7 +18,9 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
     Caminho *caminhoRaiz;
     Caminho *caminhoSpur;
     Caminho *caminhoTotal;
-    Caminho *menorCaminho;
+    // FILE *can;
+
+    // can = fopen("saidas_teste.txt", "w");
 
     for (int i = 0; i < grafo->numMenoresCaminhos; i++)
     {
@@ -38,7 +40,6 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
         for (int j = 0; j < menoresCaminhos->caminhos[i - 1]->tamCaminho - 1; j++)
         {
             spurVertice = menoresCaminhos->caminhos[i - 1]->vertices[j];
-            proxSpurVertice = menoresCaminhos->caminhos[i - 1]->vertices[j + 1];
 
             // caminhoRaiz = função que coloca o caminho até o spur node
             caminhoRaiz = copiaCaminho(grafo, menoresCaminhos->caminhos[i - 1], spurVertice.id);
@@ -47,20 +48,29 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
             {
                 if (verificaCaminhosIguais(grafo, caminhoRaiz, menoresCaminhos->caminhos[k]))
                 {
+                    proxSpurVertice = menoresCaminhos->caminhos[k]->vertices[j + 1];
                     removeAresta(spurVertice.id, proxSpurVertice.id, grafo);
                 }
             }
 
-            removeVerticesCaminho(grafo, caminhoRaiz);
+            // removeVerticesCaminho(grafo, caminhoRaiz);
 
             caminhoSpur = dijkstra(grafo, spurVertice.id);
 
-            if (spurPathVazio(caminhoSpur))
+            if (caminhoSpur == NULL)
             {
+                liberaGrafo(grafo);
+                grafo = leGrafo(nomearqLeitura);
                 continue;
             }
 
             caminhoTotal = juntaCaminhos(grafo, caminhoRaiz, caminhoSpur, spurVertice.id);
+
+            for (int i = 0; i < caminhoTotal->tamCaminho; i++)
+            {
+                printf("%d ", caminhoTotal->vertices[i].id);
+            }
+            printf("\n");
 
             if (!existeCaminhoCandidato(candidatos, caminhoTotal, grafo))
             {
@@ -72,14 +82,16 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
                         candidatos->caminhos[grafo->numMenoresCaminhos - 1] = caminhoTotal;
                         candidatos->qtdCaminhos++;
                     }
+                    // imprimeCandidatos(can, candidatos);
                 }
                 else
                 {
                     candidatos->caminhos[candidatos->qtdCaminhos] = caminhoTotal;
                     candidatos->qtdCaminhos++;
+                    // imprimeCandidatos(can, candidatos);
                 }
             }
-            imprimeGrafo("saidas_teste.txt", grafo);
+            // imprimeGrafo("saidas_teste.txt", grafo);
             liberaGrafo(grafo);
             grafo = leGrafo(nomearqLeitura);
         }
@@ -91,7 +103,6 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
 
         ordenaCandidatos(candidatos);
 
-        menorCaminho = candidatos->caminhos[0];
         menoresCaminhos->caminhos[i] = candidatos->caminhos[0];
         menoresCaminhos->qtdCaminhos++;
 
@@ -151,19 +162,13 @@ bool verificaCaminhosIguais(Grafo *grafo, Caminho *caminhoRaiz, Caminho *caminho
 
 void removeVerticesCaminho(Grafo *grafo, Caminho *caminhoRaiz)
 {
-    Apontador p;
     int indice;
 
     for (int i = 0; i < caminhoRaiz->tamCaminho - 1; i++)
     {
         indice = caminhoRaiz->vertices[i].id;
-        while ((p = grafo->listaAdj[indice]) != NULL)
-        {
 
-            grafo->listaAdj[indice] = p->prox;
-            p->prox = NULL;
-            free(p);
-        }
+        grafo->listaAdj[indice] = NULL;
     }
 }
 
@@ -181,24 +186,18 @@ bool spurPathVazio(Caminho *caminhoSpur)
 Caminho *juntaCaminhos(Grafo *grafo, Caminho *caminhoRaiz, Caminho *caminhoSpur, int destino)
 {
 
-    Caminho *novoCaminho = criaVetorCaminho(caminhoRaiz->tamCaminho + caminhoSpur->tamCaminho - 1); //-1 pois o spurVertice aparece nos dois caminhos
+    Caminho *novoCaminho = criaVetorCaminho(caminhoRaiz->tamCaminho + caminhoSpur->tamCaminho); //-1 pois o spurVertice aparece nos dois caminhos
 
     Peso pesoCaminho = 0;
 
     for (int i = 0; i < caminhoRaiz->tamCaminho; i++)
     {
         novoCaminho->vertices[i] = caminhoRaiz->vertices[i];
-
-        if (caminhoRaiz->vertices[i].id == destino)
-        {
-            novoCaminho->pesoCaminho = pesoCaminho;
-            break;
-        }
     }
 
     for (int i = caminhoRaiz->tamCaminho; i < caminhoRaiz->tamCaminho + caminhoSpur->tamCaminho - 1; i++)
     {
-        novoCaminho->vertices[i] = caminhoSpur->vertices[i];
+        novoCaminho->vertices[i] = caminhoSpur->vertices[i - (caminhoRaiz->tamCaminho - 1)];
     }
 
     novoCaminho->tamCaminho = caminhoRaiz->tamCaminho + caminhoSpur->tamCaminho - 1;
@@ -255,7 +254,7 @@ void imprimeMenoresCaminhos(char *nomearqLeitura, char *nomearqEscrita, Grafo *g
 
     for (int i = 0; i < menoresCaminhos->qtdCaminhos; i++)
     {
-        fprintf(fp, "%d ", menoresCaminhos->caminhos[i]->pesoCaminho);
+        fprintf(fp, "%lld ", menoresCaminhos->caminhos[i]->pesoCaminho);
     }
     fprintf(fp, "\n");
 
@@ -269,4 +268,13 @@ void removePrimeiroCandidato(Caminhos *candidatos)
         candidatos->caminhos[b] = candidatos->caminhos[b + 1];
     }
     candidatos->qtdCaminhos--;
+}
+
+void imprimeCandidatos(FILE *fp, Caminhos *candidatos)
+{
+    for (int i = 0; i < candidatos->qtdCaminhos; i++)
+    {
+        fprintf(fp, "%lld ", candidatos->caminhos[i]->pesoCaminho);
+    }
+    fprintf(fp, "\n");
 }
