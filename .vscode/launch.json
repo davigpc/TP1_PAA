@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/programa",
-            "args": ["entradas_grafo.txt", "saidas_grafo.txt"],
+            "args": ["test_input.txt", "saidas_grafo.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

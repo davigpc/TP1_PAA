@@ -7,7 +7,7 @@
 
 #define VERTICE_INVALIDO NULL
 #define ARESTA_NULA -1
-#define PESO_MAXIMO 10000000001
+#define PESO_MAXIMO 100000000000001
 
 typedef long long int Peso;
 
