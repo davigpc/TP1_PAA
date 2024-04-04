@@ -111,11 +111,12 @@ bool removeAresta(int v1, int v2, Grafo *grafo)
         if (grafo->listaAdj[v1] == q)
         {
             grafo->listaAdj[v1] = q->prox;
+            free(q);
+            q = NULL;
         }
         else
         {
             anterior->prox = q->prox;
-            //*peso = q->peso;
             free(q);
             q = NULL;
             return true;
@@ -198,7 +199,7 @@ void liberaGrafo(Grafo *grafo)
         }
     }
 
-    for (int i = 0; i < grafo->numVertices; i++)
+    for (int i = 0; i < grafo->numVertices + 1; i++)
     {
         free(grafo->listaAdj[i]);
     }
@@ -206,6 +207,9 @@ void liberaGrafo(Grafo *grafo)
     grafo->numVertices = 0;
     free(grafo->listaAdj);
     grafo->listaAdj = NULL;
+
+    free(grafo);
+    grafo = NULL;
 }
 
 void imprimeGrafo(char *nomearq, Grafo *grafo)

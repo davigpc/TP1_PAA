@@ -41,17 +41,15 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
                 }
             }
 
-            // removeVerticesCaminho(grafo, caminhoRaiz);
-
             caminhoSpur = dijkstra(grafo, spurVertice.id);
+
+            liberaGrafo(grafo);
+            grafo = leGrafo(nomearqLeitura);
 
             if (caminhoSpur == NULL)
             {
                 free(caminhoRaiz->vertices);
                 free(caminhoRaiz);
-                liberaGrafo(grafo);
-                free(grafo);
-                grafo = leGrafo(nomearqLeitura);
                 continue;
             }
 
@@ -66,15 +64,21 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
                     {
                         candidatos->caminhos[grafo->numMenoresCaminhos - 1] = caminhoTotal;
                         candidatos->qtdCaminhos++;
+                        caminhoTotal = caminhoRaiz;
                     }
-                    // imprimeCandidatos(can, candidatos);
                 }
                 else
                 {
                     candidatos->caminhos[candidatos->qtdCaminhos] = caminhoTotal;
                     candidatos->qtdCaminhos++;
-                    // imprimeCandidatos(can, candidatos);
+                    caminhoTotal = caminhoRaiz;
                 }
+            }
+
+            else
+            {
+                free(caminhoTotal->vertices);
+                free(caminhoTotal);
             }
 
             free(caminhoRaiz->vertices);
@@ -82,10 +86,6 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
 
             free(caminhoSpur->vertices);
             free(caminhoSpur);
-
-            liberaGrafo(grafo);
-            free(grafo);
-            grafo = leGrafo(nomearqLeitura);
         }
 
         if (candidatos->caminhos[0]->vertices == NULL)
@@ -104,8 +104,6 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
     liberaCaminhos(candidatos);
 
     liberaGrafo(grafo);
-    free(grafo);
-    grafo = leGrafo(nomearqLeitura);
 
     return menoresCaminhos;
 }
@@ -182,7 +180,7 @@ bool spurPathVazio(Caminho *caminhoSpur)
 Caminho *juntaCaminhos(Grafo *grafo, Caminho *caminhoRaiz, Caminho *caminhoSpur, int destino)
 {
 
-    Caminho *novoCaminho = criaVetorCaminho(caminhoRaiz->tamCaminho + caminhoSpur->tamCaminho); //-1 pois o spurVertice aparece nos dois caminhos
+    Caminho *novoCaminho = criaVetorCaminho(caminhoRaiz->tamCaminho + caminhoSpur->tamCaminho - 1); //-1 pois o spurVertice aparece nos dois caminhos
 
     Peso pesoCaminho = 0;
 
@@ -261,6 +259,7 @@ void imprimeMenoresCaminhos(char *nomearqLeitura, char *nomearqEscrita, Grafo *g
 
 void removePrimeiroCandidato(Caminhos *candidatos)
 {
+
     for (int b = 0; b < candidatos->qtdCaminhos - 1; b++)
     {
         candidatos->caminhos[b] = candidatos->caminhos[b + 1];
