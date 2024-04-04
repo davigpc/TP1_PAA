@@ -62,7 +62,11 @@ Caminho *dijkstra(Grafo *grafo, int fonte)
 
     if (caminho->vertices[indiceCaminho].verticePai == 0)
     {
+        free(menorCaminho->vertices);
+        free(menorCaminho);
+        free(caminho->vertices);
         free(caminho);
+        destroiHeap(heap);
         return NULL;
     }
 

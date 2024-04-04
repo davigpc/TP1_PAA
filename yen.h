@@ -37,4 +37,6 @@ void removePrimeiroCandidato(Caminhos *);
 
 void imprimeCandidatos(FILE *, Caminhos *);
 
+void liberaCaminhos(Caminhos *);
+
 #endif

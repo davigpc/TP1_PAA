@@ -94,16 +94,34 @@ void minHeapify(Heap *h, int index)
 Vertice extractMin(Heap *h)
 {
     Vertice deleteItem;
+    int i = 0;
+    int indice = 0;
 
     // Store the node in deleteItem that
     // is to be deleted.
     deleteItem = h->naoVisitados[0];
+    for (i = 1; i < h->tamanho; i++)
+    {
+        if (deleteItem.distancia > h->naoVisitados[i].distancia)
+        {
+            deleteItem = h->naoVisitados[i];
+            indice = i;
+        }
+    }
 
-    // Replace the deleted node with the last node
-    h->naoVisitados[0] = h->naoVisitados[h->tamanho - 1];
+    if (indice == h->tamanho - 1)
+    {
+        h->tamanho--;
+    }
+    else
+    {
 
-    // Decrement the size of Heap
-    h->tamanho--;
+        // Replace the deleted node with the last node
+        h->naoVisitados[indice] = h->naoVisitados[h->tamanho - 1];
+
+        // Decrement the size of Heap
+        h->tamanho--;
+    }
 
     // Call minHeapify_top_down for 0th index
     // to maintain the Heap property

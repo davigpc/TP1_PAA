@@ -7,6 +7,7 @@ Caminhos *criaCaminhos(int qtdCaminhos)
     Caminhos *caminhos = (Caminhos *)calloc(1, sizeof(Caminhos));
     caminhos->caminhos = (Caminho **)calloc(qtdCaminhos, sizeof(Caminho *));
     caminhos->qtdCaminhos = 0;
+    return caminhos;
 }
 
 Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
@@ -18,19 +19,6 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
     Caminho *caminhoRaiz;
     Caminho *caminhoSpur;
     Caminho *caminhoTotal;
-    // FILE *can;
-
-    // can = fopen("saidas_teste.txt", "w");
-
-    for (int i = 0; i < grafo->numMenoresCaminhos; i++)
-    {
-        menoresCaminhos->caminhos[i] = criaVetorCaminho(grafo->numVertices);
-    }
-
-    for (int i = 0; i < grafo->numMenoresCaminhos; i++)
-    {
-        candidatos->caminhos[i] = criaVetorCaminho(grafo->numVertices);
-    }
 
     menoresCaminhos->caminhos[0] = dijkstra(grafo, 1);
     menoresCaminhos->qtdCaminhos = 1;
@@ -59,18 +47,15 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
 
             if (caminhoSpur == NULL)
             {
+                free(caminhoRaiz->vertices);
+                free(caminhoRaiz);
                 liberaGrafo(grafo);
+                free(grafo);
                 grafo = leGrafo(nomearqLeitura);
                 continue;
             }
 
             caminhoTotal = juntaCaminhos(grafo, caminhoRaiz, caminhoSpur, spurVertice.id);
-
-            for (int i = 0; i < caminhoTotal->tamCaminho; i++)
-            {
-                printf("%d ", caminhoTotal->vertices[i].id);
-            }
-            printf("\n");
 
             if (!existeCaminhoCandidato(candidatos, caminhoTotal, grafo))
             {
@@ -91,8 +76,15 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
                     // imprimeCandidatos(can, candidatos);
                 }
             }
-            // imprimeGrafo("saidas_teste.txt", grafo);
+
+            free(caminhoRaiz->vertices);
+            free(caminhoRaiz);
+
+            free(caminhoSpur->vertices);
+            free(caminhoSpur);
+
             liberaGrafo(grafo);
+            free(grafo);
             grafo = leGrafo(nomearqLeitura);
         }
 
@@ -109,7 +101,11 @@ Caminhos *yen(char *nomearqLeitura, Grafo *grafo)
         removePrimeiroCandidato(candidatos);
     }
 
+    liberaCaminhos(candidatos);
+
     liberaGrafo(grafo);
+    free(grafo);
+    grafo = leGrafo(nomearqLeitura);
 
     return menoresCaminhos;
 }
@@ -258,6 +254,8 @@ void imprimeMenoresCaminhos(char *nomearqLeitura, char *nomearqEscrita, Grafo *g
     }
     fprintf(fp, "\n");
 
+    liberaCaminhos(menoresCaminhos);
+
     fclose(fp);
 }
 
@@ -267,6 +265,7 @@ void removePrimeiroCandidato(Caminhos *candidatos)
     {
         candidatos->caminhos[b] = candidatos->caminhos[b + 1];
     }
+
     candidatos->qtdCaminhos--;
 }
 
@@ -277,4 +276,15 @@ void imprimeCandidatos(FILE *fp, Caminhos *candidatos)
         fprintf(fp, "%lld ", candidatos->caminhos[i]->pesoCaminho);
     }
     fprintf(fp, "\n");
+}
+
+void liberaCaminhos(Caminhos *caminhos)
+{
+    for (int i = 0; i < caminhos->qtdCaminhos; i++)
+    {
+        free(caminhos->caminhos[i]->vertices);
+        free(caminhos->caminhos[i]);
+    }
+    free(caminhos->caminhos);
+    free(caminhos);
 }

@@ -198,6 +198,11 @@ void liberaGrafo(Grafo *grafo)
         }
     }
 
+    for (int i = 0; i < grafo->numVertices; i++)
+    {
+        free(grafo->listaAdj[i]);
+    }
+
     grafo->numVertices = 0;
     free(grafo->listaAdj);
     grafo->listaAdj = NULL;

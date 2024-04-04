@@ -1,0 +1,199 @@
+==86174== Memcheck, a memory error detector
+==86174== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==86174== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
+==86174== Command: ./programa entradas_grafo.txt saidas_grafo.txt
+==86174== Parent PID: 3500
+==86174== 
+--86174-- 
+--86174-- Valgrind options:
+--86174--    --leak-check=full
+--86174--    --show-leak-kinds=all
+--86174--    --track-origins=yes
+--86174--    --verbose
+--86174--    --log-file=valgrind-out.txt
+--86174-- Contents of /proc/version:
+--86174--   Linux version 5.15.0-92-generic (buildd@lcy02-amd64-005) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #102-Ubuntu SMP Wed Jan 10 09:33:48 UTC 2024
+--86174-- 
+--86174-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--86174-- Page sizes: currently 4096, max supported 4096
+--86174-- Valgrind library directory: /usr/libexec/valgrind
+--86174-- Reading syms from /home/ian/PAA/TP1/programa
+--86174-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--86174--   Considering /usr/lib/debug/.build-id/15/921ea631d9f36502d20459c43e5c85b7d6ab76.debug ..
+--86174--   .. build-id is valid
+--86174-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--86174--    object doesn't have a symbol table
+--86174--    object doesn't have a dynamic symbol table
+--86174-- Scheduler: using generic scheduler lock implementation.
+--86174-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==86174== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-86174-by-ian-on-???
+==86174== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-86174-by-ian-on-???
+==86174== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-86174-by-ian-on-???
+==86174== 
+==86174== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==86174== don't want to do, unless you know exactly what you're doing,
+==86174== or are doing some strange experiment):
+==86174==   /usr/bin/vgdb --pid=86174 ...command...
+==86174== 
+==86174== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==86174==   /path/to/gdb ./programa
+==86174== and then give GDB the following command
+==86174==   target remote | /usr/bin/vgdb --pid=86174
+==86174== --pid is optional if only one valgrind process is running
+==86174== 
+--86174-- REDIR: 0x402aa40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
+--86174-- REDIR: 0x402a810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
+--86174-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--86174--    object doesn't have a symbol table
+--86174-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--86174--    object doesn't have a symbol table
+==86174== WARNING: new redirection conflicts with existing -- ignoring it
+--86174--     old: 0x0402aa40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
+--86174--     new: 0x0402aa40 (strlen              ) R-> (2007.0) 0x0484ee30 strlen
+--86174-- REDIR: 0x4027220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484fcd0 (strcmp)
+--86174-- REDIR: 0x402afa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853840 (mempcpy)
+--86174-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--86174--   Considering /usr/lib/debug/.build-id/c2/89da5071a3399de893d2af81d6a30c62646e1e.debug ..
+--86174--   .. build-id is valid
+==86174== WARNING: new redirection conflicts with existing -- ignoring it
+--86174--     old: 0x04918c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--86174--     new: 0x04918c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==86174== WARNING: new redirection conflicts with existing -- ignoring it
+--86174--     old: 0x04918c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--86174--     new: 0x04918c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+==86174== WARNING: new redirection conflicts with existing -- ignoring it
+--86174--     old: 0x04918c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--86174--     new: 0x04918c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==86174== WARNING: new redirection conflicts with existing -- ignoring it
+--86174--     old: 0x04918c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--86174--     new: 0x04918c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+--86174-- REDIR: 0x491b720 (libc.so.6:strnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491b9e0 (libc.so.6:strpbrk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491b2e0 (libc.so.6:strcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x4939cd0 (libc.so.6:wcsnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491c6d0 (libc.so.6:memset) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x4938540 (libc.so.6:wcslen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491cc10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x4938370 (libc.so.6:wcschr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491b260 (libc.so.6:index) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491b960 (libc.so.6:rindex) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491c5a0 (libc.so.6:memmove) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+==86174== Preferring higher priority redirection:
+--86174--     old: 0x04a137c0 (__memcpy_avx_unalign) R-> (2018.0) 0x04850f90 __memcpy_avx_unaligned_erms
+--86174--     new: 0x04a137c0 (__memcpy_avx_unalign) R-> (2018.1) 0x04852880 memmove
+--86174-- REDIR: 0x49383f0 (libc.so.6:wcscmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491c9e0 (libc.so.6:stpncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x49389b0 (libc.so.6:wmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491b830 (libc.so.6:strncmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491ca70 (libc.so.6:strcasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491b420 (libc.so.6:strcspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x4938470 (libc.so.6:wcscpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491b1d0 (libc.so.6:strcat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491cb60 (libc.so.6:strncasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491c480 (libc.so.6:bcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x4924570 (libc.so.6:memrchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491e010 (libc.so.6:strchrnul) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491b390 (libc.so.6:strcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491cb10 (libc.so.6:strcasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491b6a0 (libc.so.6:strlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491b8d0 (libc.so.6:strncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491c950 (libc.so.6:stpcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491c3f0 (libc.so.6:memchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491bb00 (libc.so.6:strspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491c7d0 (libc.so.6:mempcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491cac0 (libc.so.6:strncasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x491df80 (libc.so.6:rawmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--86174-- REDIR: 0x4a10610 (libc.so.6:__strrchr_avx2) redirected to 0x484e810 (rindex)
+--86174-- REDIR: 0x49180a0 (libc.so.6:malloc) redirected to 0x4848820 (malloc)
+--86174-- REDIR: 0x491bfc0 (libc.so.6:__GI_strstr) redirected to 0x4853ae0 (__strstr_sse2)
+--86174-- REDIR: 0x4919520 (libc.so.6:calloc) redirected to 0x484d9d0 (calloc)
+--86174-- REDIR: 0x49183e0 (libc.so.6:free) redirected to 0x484b210 (free)
+==86174== Invalid read of size 4
+==86174==    at 0x10AF65: verificaCaminhosIguais (yen.c:145)
+==86174==    by 0x10B2B4: existeCaminhoCandidato (yen.c:230)
+==86174==    by 0x10AB9F: yen (yen.c:60)
+==86174==    by 0x10B2FD: imprimeMenoresCaminhos (yen.c:240)
+==86174==    by 0x1092F7: main (main.c:12)
+==86174==  Address 0x4aa5f90 is 0 bytes after a block of size 96 alloc'd
+==86174==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==86174==    by 0x10A398: criaVetorCaminho (dijkstra.c:8)
+==86174==    by 0x10B05B: juntaCaminhos (yen.c:185)
+==86174==    by 0x10AB81: yen (yen.c:58)
+==86174==    by 0x10B2FD: imprimeMenoresCaminhos (yen.c:240)
+==86174==    by 0x1092F7: main (main.c:12)
+==86174== 
+--86174-- REDIR: 0x4a10400 (libc.so.6:__strchrnul_avx2) redirected to 0x4853330 (strchrnul)
+--86174-- REDIR: 0x4a13780 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4853440 (mempcpy)
+==86174== 
+==86174== HEAP SUMMARY:
+==86174==     in use at exit: 344 bytes in 13 blocks
+==86174==   total heap usage: 154 allocs, 141 frees, 47,296 bytes allocated
+==86174== 
+==86174== Searching for pointers to 13 not-freed blocks
+==86174== Checked 108,144 bytes
+==86174== 
+==86174== 24 bytes in 1 blocks are definitely lost in loss record 1 of 5
+==86174==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==86174==    by 0x1094EC: insereAresta (grafo_listaAdj.c:80)
+==86174==    by 0x109AC3: leGrafo (grafo_listaAdj.c:266)
+==86174==    by 0x10AB5B: yen (yen.c:54)
+==86174==    by 0x10B2FD: imprimeMenoresCaminhos (yen.c:240)
+==86174==    by 0x1092F7: main (main.c:12)
+==86174== 
+==86174== 56 bytes in 1 blocks are indirectly lost in loss record 2 of 5
+==86174==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==86174==    by 0x109345: inicializaGrafo (grafo_listaAdj.c:22)
+==86174==    by 0x109A52: leGrafo (grafo_listaAdj.c:258)
+==86174==    by 0x10ADB6: yen (yen.c:108)
+==86174==    by 0x10B2FD: imprimeMenoresCaminhos (yen.c:240)
+==86174==    by 0x1092F7: main (main.c:12)
+==86174== 
+==86174== 72 bytes in 3 blocks are definitely lost in loss record 3 of 5
+==86174==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==86174==    by 0x1094EC: insereAresta (grafo_listaAdj.c:80)
+==86174==    by 0x109AC3: leGrafo (grafo_listaAdj.c:266)
+==86174==    by 0x10ACC7: yen (yen.c:88)
+==86174==    by 0x10B2FD: imprimeMenoresCaminhos (yen.c:240)
+==86174==    by 0x1092F7: main (main.c:12)
+==86174== 
+==86174== 168 bytes in 7 blocks are indirectly lost in loss record 4 of 5
+==86174==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==86174==    by 0x1094EC: insereAresta (grafo_listaAdj.c:80)
+==86174==    by 0x109AC3: leGrafo (grafo_listaAdj.c:266)
+==86174==    by 0x10ADB6: yen (yen.c:108)
+==86174==    by 0x10B2FD: imprimeMenoresCaminhos (yen.c:240)
+==86174==    by 0x1092F7: main (main.c:12)
+==86174== 
+==86174== 248 (24 direct, 224 indirect) bytes in 1 blocks are definitely lost in loss record 5 of 5
+==86174==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==86174==    by 0x109322: inicializaGrafo (grafo_listaAdj.c:18)
+==86174==    by 0x109A52: leGrafo (grafo_listaAdj.c:258)
+==86174==    by 0x10ADB6: yen (yen.c:108)
+==86174==    by 0x10B2FD: imprimeMenoresCaminhos (yen.c:240)
+==86174==    by 0x1092F7: main (main.c:12)
+==86174== 
+==86174== LEAK SUMMARY:
+==86174==    definitely lost: 120 bytes in 5 blocks
+==86174==    indirectly lost: 224 bytes in 8 blocks
+==86174==      possibly lost: 0 bytes in 0 blocks
+==86174==    still reachable: 0 bytes in 0 blocks
+==86174==         suppressed: 0 bytes in 0 blocks
+==86174== 
+==86174== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)
+==86174== 
+==86174== 1 errors in context 1 of 4:
+==86174== Invalid read of size 4
+==86174==    at 0x10AF65: verificaCaminhosIguais (yen.c:145)
+==86174==    by 0x10B2B4: existeCaminhoCandidato (yen.c:230)
+==86174==    by 0x10AB9F: yen (yen.c:60)
+==86174==    by 0x10B2FD: imprimeMenoresCaminhos (yen.c:240)
+==86174==    by 0x1092F7: main (main.c:12)
+==86174==  Address 0x4aa5f90 is 0 bytes after a block of size 96 alloc'd
+==86174==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==86174==    by 0x10A398: criaVetorCaminho (dijkstra.c:8)
+==86174==    by 0x10B05B: juntaCaminhos (yen.c:185)
+==86174==    by 0x10AB81: yen (yen.c:58)
+==86174==    by 0x10B2FD: imprimeMenoresCaminhos (yen.c:240)
+==86174==    by 0x1092F7: main (main.c:12)
+==86174== 
+==86174== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)
