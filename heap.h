@@ -8,19 +8,18 @@
 typedef struct vertice
 {
 	int id;
+	int contador;
 	Peso distancia;
-	int verticePai;
-	int idVerticePai;
 } Vertice;
 
 typedef struct Heap
 {
-	Vertice *naoVisitados;
+	Vertice *vertices;
 	int tamanho;
 	int capacidade;
 } Heap;
 
-Heap *criaHeap(int, int);
+Heap *criaHeapVazia(int);
 
 void insert(Heap *, Vertice);
 

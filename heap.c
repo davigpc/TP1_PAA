@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 // Define a createHeap function
-Heap *criaHeap(int capacidade, int fonte)
+Heap *criaHeapVazia(int capacidade)
 {
     // Allocating memory to Heap h
     Heap *h = (Heap *)malloc(1 * sizeof(Heap));
@@ -13,27 +13,8 @@ Heap *criaHeap(int capacidade, int fonte)
     h->capacidade = capacidade;
 
     // Allocating memory to array
-    h->naoVisitados = (Vertice *)malloc(capacidade * sizeof(Vertice));
+    h->vertices = (Vertice *)malloc(capacidade * sizeof(Vertice));
 
-    int i;
-
-    for (i = 0; i < capacidade; i++)
-    {
-        h->naoVisitados[i].id = i + 1;
-        h->naoVisitados[i].distancia = PESO_MAXIMO;
-        h->naoVisitados[i].verticePai = 0;
-    }
-
-    h->naoVisitados[fonte - 1].distancia = 0;
-    h->naoVisitados[fonte - 1].verticePai = -1;
-
-    h->tamanho = i;
-    i = (h->tamanho - 2) / 2;
-    while (i >= 0)
-    {
-        minHeapify(h, i);
-        i--;
-    }
     return h;
 }
 
@@ -45,13 +26,13 @@ void insertHelper(Heap *h, int index)
     // in parent variable
     int parent = (index - 1) / 2;
 
-    if (h->naoVisitados[parent].distancia > h->naoVisitados[index].distancia)
+    if (h->vertices[parent].distancia > h->vertices[index].distancia)
     {
         // Swapping when child is smaller
         // than parent element
-        Vertice temp = h->naoVisitados[parent];
-        h->naoVisitados[parent] = h->naoVisitados[index];
-        h->naoVisitados[index] = temp;
+        Vertice temp = h->vertices[parent];
+        h->vertices[parent] = h->vertices[index];
+        h->vertices[index] = temp;
 
         // Recursively calling insertHelper
         insertHelper(h, parent);
@@ -73,17 +54,17 @@ void minHeapify(Heap *h, int index)
 
     // store esquerda or direita element in min if
     // any of these is smaller that its parent
-    if (esquerda != -1 && h->naoVisitados[esquerda].distancia < h->naoVisitados[index].distancia)
+    if (esquerda != -1 && h->vertices[esquerda].distancia < h->vertices[min].distancia)
         min = esquerda;
-    if (direita != -1 && h->naoVisitados[direita].distancia < h->naoVisitados[min].distancia)
+    if (direita != -1 && h->vertices[direita].distancia < h->vertices[min].distancia)
         min = direita;
 
     // Swapping the nodes
     if (min != index)
     {
-        Vertice temp = h->naoVisitados[min];
-        h->naoVisitados[min] = h->naoVisitados[index];
-        h->naoVisitados[index] = temp;
+        Vertice temp = h->vertices[min];
+        h->vertices[min] = h->vertices[index];
+        h->vertices[index] = temp;
 
         // recursively calling for their child elements
         // to maintain min Heap
@@ -99,29 +80,13 @@ Vertice extractMin(Heap *h)
 
     // Store the node in deleteItem that
     // is to be deleted.
-    deleteItem = h->naoVisitados[0];
-    for (i = 1; i < h->tamanho; i++)
-    {
-        if (deleteItem.distancia > h->naoVisitados[i].distancia)
-        {
-            deleteItem = h->naoVisitados[i];
-            indice = i;
-        }
-    }
+    deleteItem = h->vertices[0];
 
-    if (indice == h->tamanho - 1)
-    {
-        h->tamanho--;
-    }
-    else
-    {
+    // Replace the deleted node with the last node
+    h->vertices[0] = h->vertices[h->tamanho - 1];
 
-        // Replace the deleted node with the last node
-        h->naoVisitados[indice] = h->naoVisitados[h->tamanho - 1];
-
-        // Decrement the size of Heap
-        h->tamanho--;
-    }
+    // Decrement the size of Heap
+    h->tamanho--;
 
     // Call minHeapify_top_down for 0th index
     // to maintain the Heap property
@@ -137,11 +102,16 @@ void insert(Heap *h, Vertice data)
     if (h->tamanho < h->capacidade)
     {
         // Inserting data into an array
-        h->naoVisitados[h->tamanho] = data;
+        h->vertices[h->tamanho] = data;
         // Calling insertHelper function
         insertHelper(h, h->tamanho);
         // Incrementing size of array
         h->tamanho++;
+    }
+    else
+    {
+        h->vertices = (Vertice *)realloc((2 * h->capacidade), sizeof(Vertice));
+        insert(h, data);
     }
 }
 
@@ -150,14 +120,14 @@ void printHeap(Heap *h)
 
     for (int i = 0; i < h->tamanho; i++)
     {
-        printf("%d ", h->naoVisitados[i].id);
+        printf("%d ", h->vertices[i].id);
     }
     printf("\n");
 }
 
 void destroiHeap(Heap *h)
 {
-    free(h->naoVisitados);
+    free(h->vertices);
     free(h);
 }
 
@@ -166,7 +136,7 @@ int pesquisaHeap(Heap *h, int id)
     int i;
     for (i = 0; i < h->tamanho; i++)
     {
-        if (id == h->naoVisitados[i].id)
+        if (id == h->vertices[i].id)
         {
             return i;
         }
@@ -178,6 +148,6 @@ void imprimeHeap(Heap *h)
 {
     for (int i = 0; i < h->tamanho; i++)
     {
-        printf("%d  %lld", h->naoVisitados[i].id, h->naoVisitados[i].distancia);
+        printf("%d  %lld", h->vertices[i].id, h->vertices[i].distancia);
     }
 }
