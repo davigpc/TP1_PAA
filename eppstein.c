@@ -8,7 +8,7 @@ Peso *eppstein(Grafo *grafo)
     int numVertices = grafo->numVertices;
     int numMenoresCaminhos = grafo->numMenoresCaminhos;
 
-    Heap *minHeap = criaHeapVazia;
+    Heap *minHeap = criaHeapVazia(numVertices);
     int *contadores = calloc((numVertices + 1), sizeof(int));
 
     Peso *menoresCaminhos = malloc(numMenoresCaminhos * sizeof(Peso));
@@ -60,4 +60,28 @@ void insereFihos(Grafo *grafo, Vertice pai, Heap *heap, int *contadores)
         insert(heap, filho);
         q = q->prox;
     }
+}
+
+void imprimeMenoresCaminhos(char *nomearqEscrita, Grafo *grafo)
+{
+    Peso *menoresCaminhos = eppstein(grafo);
+    FILE *fp;
+
+    fp = fopen(nomearqEscrita, "w");
+
+    if (fp == NULL)
+    {
+        fprintf(stderr, "ERRO: falha ao abrir arquivo.\n");
+        return;
+    }
+
+    for (int i = 0; i < grafo->numMenoresCaminhos; i++)
+    {
+        fprintf(fp, "%lld ", menoresCaminhos[i]);
+    }
+    fprintf(fp, "\n");
+
+    //liberaCaminhos(menoresCaminhos);
+
+    fclose(fp);
 }

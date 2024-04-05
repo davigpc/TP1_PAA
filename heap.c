@@ -110,7 +110,7 @@ void insert(Heap *h, Vertice data)
     }
     else
     {
-        h->vertices = (Vertice *)realloc((2 * h->capacidade), sizeof(Vertice));
+        h->vertices = (Vertice *)realloc((h), sizeof(Vertice));
         insert(h, data);
     }
 }
