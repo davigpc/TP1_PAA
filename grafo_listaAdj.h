@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "heap.h"
 #include "tempo.h"
 
 
@@ -58,14 +57,13 @@ void liberaGrafo(Grafo *);
 
 void imprimeGrafo(char *, Grafo *);
 
-Grafo *leGrafo(char *);
+Grafo *leGrafo(FILE *);
 
 Peso obtemPesoAresta(int, int, Grafo *);
 
 Peso *eppstein(Grafo *);
 
-void imprimeMenoresCaminhos(char *, Grafo *);
+void imprimeMenoresCaminhos(FILE *, Grafo *);
 
-void insereFihos(Grafo *, Vertice, Heap *);
 
 #endif

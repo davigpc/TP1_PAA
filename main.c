@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <sys/resource.h>
 #include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 #include <bits/getopt_core.h>
 
@@ -11,12 +12,13 @@
 
 
 
-int main(int argc, char *argv[3])
+int main(int argc, char *argv[2])
 {
 
     FILE* input_file = NULL;
     FILE* output_file = stderr;
     char c;
+
     while((c = getopt(argc, argv, "i:o:")) != -1) {
         switch (c) {
             case 'i':
@@ -31,9 +33,18 @@ int main(int argc, char *argv[3])
                 ;;
         }
     }
-    Grafo *grafo = leGrafo(argv[1]);
-    imprimeMenoresCaminhos(argv[2], grafo);
 
+    Grafo *grafo = leGrafo(input_file);
+
+    if(grafo == NULL){
+        return 1;
+    }
+
+    imprimeMenoresCaminhos(output_file, grafo);
+
+    liberaGrafo(grafo);
+    fclose(input_file);
+    fclose(output_file);
 
     return 0;
 }

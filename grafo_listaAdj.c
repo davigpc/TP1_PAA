@@ -242,38 +242,59 @@ void imprimeGrafo(char *nomearq, Grafo *grafo)
     }
 }
 
-Grafo *leGrafo(char *nomearq)
+Grafo *leGrafo(FILE * nomearq)
 {
-    FILE *fp;
+
     int numVertices, numArestas, numMenoresCaminhos;
     int v1, v2;
     Peso peso;
 
-    fp = fopen(nomearq, "r");
 
-    if (fp == NULL)
+    if (nomearq == NULL)
     {
         fprintf(stderr, "ERRO: falha ao abrir arquivo.\n");
         return (NULL);
     }
 
-    if (fscanf(fp, "%d %d %d", &numVertices, &numArestas, &numMenoresCaminhos) != 3)
+    if (fscanf(nomearq, "%d %d %d", &numVertices, &numArestas, &numMenoresCaminhos) != 3)
     {
         fprintf(stderr, "ERRO: numero de argumentos de entrada invalido.\n");
         return (NULL);
     }
 
+    if(numVertices < 2 || numVertices > 100000){
+        printf("ERRO: Numero de vertices invalido.\n");
+        return (NULL);
+    }
+
+    if(numArestas < 1 || numArestas > 200000){
+        printf("ERRO: Numero de arestas invalido.\n");
+        return (NULL);
+    }
+
+    if(numMenoresCaminhos < 1 || numMenoresCaminhos > 10){
+        printf("ERRO: Numero de menores caminhos invalido.\n");
+        return (NULL);
+    }
+
+    tempo tempoInicio = tempoAtual();
+
     Grafo *grafo = inicializaGrafo(numVertices, numArestas, numMenoresCaminhos);
 
     for (int i = 1; i <= grafo->numArestas; i++)
     {
-        if (fscanf(fp, "%d %d %lld", &v1, &v2, &peso) != 3)
+        if (fscanf(nomearq, "%d %d %lld", &v1, &v2, &peso) != 3)
         {
             fprintf(stderr, "ERRO 1: numero de argumentos de entrada invalido.\n");
         }
         insereAresta(v1 - 1, v2 - 1, peso, grafo);
     }
-    fclose(fp);
+
+    tempo tempoFinal = tempoAtual();
+
+    printf("Tempo de leitura:\n");
+    imprimeTempos(tempoInicio, tempoFinal);
+
     return grafo;
 }
 
@@ -363,7 +384,7 @@ void insereFihos(Grafo *grafo, Vertice pai, Heap *heap)
 
 }
 
-void imprimeMenoresCaminhos(char *nomearqEscrita, Grafo *grafo)
+void imprimeMenoresCaminhos(FILE *nomearqEscrita, Grafo *grafo)
 {
     tempo tempoInicio = tempoAtual();
 
@@ -373,25 +394,23 @@ void imprimeMenoresCaminhos(char *nomearqEscrita, Grafo *grafo)
 
     double tempoTotal = tempoDecorrido(tempoInicio.tv, tempoFinal.tv);
 
-    imprimeTempos(nomearqEscrita, tempoInicio, tempoFinal);
+    printf("Tempo de execucao:\n");
+    imprimeTempos(tempoInicio, tempoFinal);
 
-    FILE *fp;
 
-    fp = fopen(nomearqEscrita, "w");
-
-    if (fp == NULL)
+    if (nomearqEscrita == NULL)
     {
         fprintf(stderr, "ERRO: falha ao abrir arquivo.\n");
         return;
     }
 
+
     for (int i = 0; i < grafo->numMenoresCaminhos; i++)
     {
-        fprintf(fp, "%lld ", menoresCaminhos[i]);
+        fprintf(nomearqEscrita, "%lld ", menoresCaminhos[i]);
     }
-    fprintf(fp, "\n");
+    fprintf(nomearqEscrita, "\n");
 
     free(menoresCaminhos);
 
-    fclose(fp);
 }

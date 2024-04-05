@@ -36,4 +36,6 @@ void imprimeHeap(Heap *);
 
 bool getSizeHeap(Heap *);
 
+void insereFihos(Grafo *, Vertice, Heap *);
+
 #endif
