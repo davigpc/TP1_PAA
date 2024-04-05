@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "heap.h"
+#include "tempo.h"
+
+
 #define VERTICE_INVALIDO NULL
 #define ARESTA_NULA -1
 #define PESO_MAXIMO 100000000000001
@@ -57,5 +61,11 @@ void imprimeGrafo(char *, Grafo *);
 Grafo *leGrafo(char *);
 
 Peso obtemPesoAresta(int, int, Grafo *);
+
+Peso *eppstein(Grafo *);
+
+void imprimeMenoresCaminhos(char *, Grafo *);
+
+void insereFihos(Grafo *, Vertice, Heap *);
 
 #endif

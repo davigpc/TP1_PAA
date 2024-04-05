@@ -4,24 +4,32 @@
 #include <unistd.h>
 #include "tempo.h"
 
-float tempoUsuario(struct rusage *inicio, struct rusage *fim)
+tempo tempoAtual()
 {
 
-  return (fim->ru_utime.tv_sec - inicio->ru_utime.tv_sec) + 1e-6 * (fim->ru_utime.tv_usec - inicio->ru_utime.tv_usec);
+  tempo atual;
+
+  getrusage(RUSAGE_SELF, &atual.rtime);
+  gettimeofday(&atual.tv, NULL);
+
+  return atual;
 }
 
-float tempoSistema(struct rusage *inicio, struct rusage *fim)
+double tempoDecorrido(struct timeval inicio, struct timeval fim)
 {
-  return (fim->ru_stime.tv_sec - inicio->ru_stime.tv_sec) + 1e-6 * (fim->ru_stime.tv_usec - inicio->ru_stime.tv_usec);
+  struct timeval diff;
+
+  timersub(&inicio, &fim, &diff);
+
+  return (double)diff.tv_sec + diff.tv_usec / 1000000.0;
 }
 
-float tempoRelogio(struct timeval *inicio, struct timeval *fim)
+void imprimeTempos(char * arqSaida, tempo inicio, tempo fim)
 {
-  return (fim->tv_sec - inicio->tv_sec) + 1e-6 * (fim->tv_usec - inicio->tv_usec);
-}
 
-void imprimeTempos(char *arqSaida, struct rusage *inicio, struct rusage *fim, struct timeval *inicioRelogio, struct timeval *fimRelogio)
-{
+  double tempoSistema = tempoDecorrido(inicio.rtime.ru_stime, fim.rtime.ru_stime);
+  double tempoUsuario = tempoDecorrido(inicio.rtime.ru_utime, fim.rtime.ru_utime);
+  double tempoRelogio = tempoDecorrido(inicio.tv, fim.tv);
 
   FILE *fp = fopen(arqSaida, "w");
   if (fp == NULL)
@@ -30,9 +38,8 @@ void imprimeTempos(char *arqSaida, struct rusage *inicio, struct rusage *fim, st
     return;
   }
 
-  fprintf(fp, "TEMPO USUARIO: %f\n", tempoUsuario(inicio, fim));
-  fprintf(fp, "TEMPO SISTEMA: %f\n", tempoSistema(inicio, fim));
-  fprintf(fp, "TEMPO RELOGIO: %f\n", tempoRelogio(inicioRelogio, fimRelogio));
-
-  fclose(fp);
+  fprintf(fp, "TEMPO USUARIO: %lf\n", tempoUsuario);
+  fprintf(fp, "TEMPO SISTEMA: %lf\n", tempoSistema);
+  fprintf(fp, "TEMPO RELOGIO: %lf\n", tempoRelogio);
 }
+

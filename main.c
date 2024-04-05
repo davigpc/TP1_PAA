@@ -2,31 +2,38 @@
 #include <stdlib.h>
 #include <sys/resource.h>
 #include <sys/time.h>
-#include <time.h>
+#include <unistd.h>
+#include <bits/getopt_core.h>
+
 #include "grafo_listaAdj.h"
 #include "heap.h"
-#include "eppstein.h"
 #include "tempo.h"
+
+
 
 int main(int argc, char *argv[3])
 {
 
-    struct rusage inicio, fim;
-    struct timeval inicioRelogio, fimRelogio;
-
+    FILE* input_file = NULL;
+    FILE* output_file = stderr;
+    char c;
+    while((c = getopt(argc, argv, "i:o:")) != -1) {
+        switch (c) {
+            case 'i':
+                input_file = fopen(optarg, "r");
+                if(!input_file) printf("Falha ao abrir arquivo %s\n", optarg);
+                break;
+            case 'o':
+                output_file = fopen(optarg, "w");
+                if(!output_file) printf("Falha ao abrir arquivo %s\n", optarg);
+                break;
+            default:
+                ;;
+        }
+    }
     Grafo *grafo = leGrafo(argv[1]);
-
-    getrusage(RUSAGE_SELF, &inicio);
-    gettimeofday(&inicioRelogio, NULL);
-
     imprimeMenoresCaminhos(argv[2], grafo);
 
-    gettimeofday(&fimRelogio, NULL);
-    getrusage(RUSAGE_SELF, &fim);
-
-    imprimeTempos(argv[3], &inicio, &fim, &inicioRelogio, &fimRelogio);
-
-    liberaGrafo(grafo);
 
     return 0;
 }

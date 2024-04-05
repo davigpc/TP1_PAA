@@ -1,6 +1,8 @@
-#include "heap.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "grafo_listaAdj.h"
+#include "heap.h"
 
 // Define a createHeap function
 Heap *criaHeapVazia(int capacidade)

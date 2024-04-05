@@ -7,10 +7,18 @@
 #include <unistd.h>
 #include <time.h>
 
-float tempoUsuario(struct rusage *, struct rusage *);
-float tempoSistema(struct rusage *, struct rusage *);
-float tempoRelogio(struct timeval *, struct timeval *);
+typedef struct {
 
-void imprimeTempos(char *, struct rusage *, struct rusage *, struct timeval *, struct timeval *);
+    struct rusage rtime;
+    struct timeval tv;
+
+} tempo;
+
+tempo tempoAtual();
+
+double tempoDecorrido(struct timeval inicio, struct timeval fim);
+
+void imprimeTempos(char*, tempo inicio, tempo fim);
+
 
 #endif
