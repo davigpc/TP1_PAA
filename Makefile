@@ -3,8 +3,8 @@ all: programa
 run: programa
 		@./programa
 
-programa: main.o grafo_listaAdj.o heap.o eppstein.o
-		gcc -g main.o grafo_listaAdj.o heap.o eppstein.o -o programa
+programa: main.o grafo_listaAdj.o heap.o eppstein.o tempo.o
+		gcc -g main.o grafo_listaAdj.o heap.o eppstein.o tempo.o -o programa
 
 
 main.o: main.c
@@ -18,6 +18,9 @@ heap.o: heap.c heap.h grafo_listaAdj.h
 
 eppstein.o: eppstein.c eppstein.h heap.h grafo_listaAdj.h
 		gcc -c eppstein.c -g
+
+tempo.o: tempo.c tempo.h
+		gcc -c tempo.c -g
 
 clean:
 		rm *.o programa*

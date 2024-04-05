@@ -30,9 +30,9 @@ void imprimeTempos(char *arqSaida, struct rusage *inicio, struct rusage *fim, st
     return;
   }
 
-  fprintf(fp, "TEMPO USUARIO: %f\n", tempoUsuario(&inicio, &fim));
-  fprintf(fp, "TEMPO SISTEMA: %f\n", tempoSistema(&inicio, &fim));
-  fprintf(fp, "TEMPO RELOGIO: %f\n", tempoRelogio(&inicioRelogio, &fimRelogio));
+  fprintf(fp, "TEMPO USUARIO: %f\n", tempoUsuario(inicio, fim));
+  fprintf(fp, "TEMPO SISTEMA: %f\n", tempoSistema(inicio, fim));
+  fprintf(fp, "TEMPO RELOGIO: %f\n", tempoRelogio(inicioRelogio, fimRelogio));
 
   fclose(fp);
 }

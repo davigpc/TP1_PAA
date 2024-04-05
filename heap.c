@@ -110,7 +110,8 @@ void insert(Heap *h, Vertice data)
     }
     else
     {
-        h->vertices = (Vertice *)realloc((h), sizeof(Vertice));
+        h->capacidade = 2 * h->capacidade;
+        h->vertices = (Vertice *)realloc((h->vertices), h->capacidade * sizeof(Vertice));
         insert(h, data);
     }
 }
@@ -150,4 +151,14 @@ void imprimeHeap(Heap *h)
     {
         printf("%d  %lld", h->vertices[i].id, h->vertices[i].distancia);
     }
+}
+
+bool getSizeHeap(Heap *heap)
+{
+    if (heap->tamanho == 0)
+    {
+        return true;
+    }
+
+    return false;
 }

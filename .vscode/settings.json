@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "grafo_listaadj.h": "c",
+        "time.h": "c"
     }
 }

@@ -19,7 +19,7 @@ Grafo *inicializaGrafo(int numVertices, int numArestas, int numMenoresCaminhos)
 
     grafo->numVertices = numVertices;
 
-    grafo->listaAdj = (Apontador *)calloc(numVertices + 2, sizeof(Apontador));
+    grafo->listaAdj = (Apontador *)calloc(numVertices, sizeof(Apontador));
 
     // for num vert
 
@@ -40,7 +40,7 @@ bool verificaValidadeVertice(int v, Grafo *grafo)
         return false;
     }
 
-    if (v <= 0)
+    if (v < 0)
     {
         fprintf(stderr, "ERRO: Numero do vertice (%d) deve ser positivo.\n", v);
         return false;
@@ -187,7 +187,7 @@ void liberaGrafo(Grafo *grafo)
     int v;
     Apontador p;
 
-    for (v = 0; v <= grafo->numVertices + 1; v++)
+    for (v = 0; v < grafo->numVertices; v++)
     {
 
         while ((p = grafo->listaAdj[v]) != NULL)
@@ -199,10 +199,10 @@ void liberaGrafo(Grafo *grafo)
         }
     }
 
-    for (int i = 0; i < grafo->numVertices + 1; i++)
-    {
-        free(grafo->listaAdj[i]);
-    }
+    // for (int i = 0; i < grafo->numVertices + 1; i++)
+    // {
+    //     free(grafo->listaAdj[i]);
+    // }
 
     grafo->numVertices = 0;
     free(grafo->listaAdj);
@@ -267,7 +267,7 @@ Grafo *leGrafo(char *nomearq)
         {
             fprintf(stderr, "ERRO 1: numero de argumentos de entrada invalido.\n");
         }
-        insereAresta(v1, v2, peso, grafo);
+        insereAresta(v1 - 1, v2 - 1, peso, grafo);
     }
     fclose(fp);
     return grafo;

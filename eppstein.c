@@ -3,26 +3,33 @@
 #include <stdlib.h>
 #include "eppstein.h"
 
+void insereFihos(Grafo *grafo, Vertice pai, Heap *heap);
+
 Peso *eppstein(Grafo *grafo)
 {
     int numVertices = grafo->numVertices;
     int numMenoresCaminhos = grafo->numMenoresCaminhos;
 
     Heap *minHeap = criaHeapVazia(numVertices);
-    int *contadores = calloc((numVertices + 1), sizeof(int));
+    int *contadores = calloc((numVertices), sizeof(int));
 
-    Peso *menoresCaminhos = malloc(numMenoresCaminhos * sizeof(Peso));
+    Peso *menoresCaminhos = calloc(numMenoresCaminhos, sizeof(Peso));
     int indiceMenores = 0;
 
     Vertice atual;
     Vertice raiz;
-    raiz.id = 1;
+    raiz.id = 0;
     raiz.distancia = 0;
 
-    insereFihos(grafo, raiz, minHeap, contadores);
+    insert(minHeap, raiz);
 
-    while (contadores[numVertices] < numMenoresCaminhos)
+    while (contadores[numVertices - 1] < numMenoresCaminhos)
     {
+        if (getSizeHeap(minHeap))
+        {
+            break;
+        }
+
         atual = extractMin(minHeap);
 
         if (contadores[atual.id] == numMenoresCaminhos)
@@ -32,18 +39,23 @@ Peso *eppstein(Grafo *grafo)
 
         contadores[atual.id]++;
 
-        if (atual.id == numVertices)
+        if (atual.id == numVertices - 1)
         {
             menoresCaminhos[indiceMenores] = atual.distancia;
+            indiceMenores++;
         }
 
-        insereFihos(grafo, atual, minHeap, contadores);
+        insereFihos(grafo, atual, minHeap);
     }
+
+    destroiHeap(minHeap);
+
+    free(contadores);
 
     return menoresCaminhos;
 }
 
-void insereFihos(Grafo *grafo, Vertice pai, Heap *heap, int *contadores)
+void insereFihos(Grafo *grafo, Vertice pai, Heap *heap)
 {
     int indicePai = pai.id;
     Vertice filho;
@@ -55,11 +67,12 @@ void insereFihos(Grafo *grafo, Vertice pai, Heap *heap, int *contadores)
     {
         filho.id = q->vdestino;
         filho.distancia = q->peso + pai.distancia;
-        contadores[q->vdestino]++;
 
         insert(heap, filho);
         q = q->prox;
     }
+
+    // minHeapify(heap, 0);
 }
 
 void imprimeMenoresCaminhos(char *nomearqEscrita, Grafo *grafo)
@@ -81,7 +94,7 @@ void imprimeMenoresCaminhos(char *nomearqEscrita, Grafo *grafo)
     }
     fprintf(fp, "\n");
 
-    //liberaCaminhos(menoresCaminhos);
+    free(menoresCaminhos);
 
     fclose(fp);
 }

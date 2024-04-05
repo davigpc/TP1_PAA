@@ -34,4 +34,6 @@ int pesquisaHeap(Heap *, int);
 
 void imprimeHeap(Heap *);
 
+bool getSizeHeap(Heap *);
+
 #endif
