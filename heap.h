@@ -8,7 +8,6 @@
 typedef struct vertice
 {
 	int id;
-	int contador;
 	Peso distancia;
 } Vertice;
 

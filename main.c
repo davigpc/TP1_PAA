@@ -2,14 +2,13 @@
 #include <stdlib.h>
 #include "grafo_listaAdj.h"
 #include "heap.h"
-#include "dijkstra.h"
-#include "yen.h"
+#include "eppstein.h"
 
 int main(int argc, char *argv[2])
 {
     Grafo *grafo = leGrafo(argv[1]);
 
-    imprimeMenoresCaminhos(argv[1], argv[2], grafo);
+    imprimeMenoresCaminhos(argv[2], grafo);
 
     return 0;
 }
