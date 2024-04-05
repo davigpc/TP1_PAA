@@ -4,40 +4,33 @@
 #include "grafo_listaAdj.h"
 #include "heap.h"
 
-// Define a createHeap function
 Heap *criaHeapVazia(int capacidade)
 {
-    // Allocating memory to Heap h
     Heap *h = (Heap *)malloc(1 * sizeof(Heap));
 
-    // set the values to size and capacidade
     h->tamanho = 0;
     h->capacidade = capacidade;
 
-    // Allocating memory to array
     h->vertices = (Vertice *)malloc(capacidade * sizeof(Vertice));
 
     return h;
 }
 
-// Defining insertHelper function
-void insertHelper(Heap *h, int index)
+void ajudaInserir(Heap *h, int index)
 {
 
-    // Store parent of element at index
-    // in parent variable
-    int parent = (index - 1) / 2;
+    // Guarda posicao do pai do elemento que esta em index
+    int pai = (index - 1) / 2;
 
-    if (h->vertices[parent].distancia > h->vertices[index].distancia)
+    if (h->vertices[pai].distancia > h->vertices[index].distancia)
     {
-        // Swapping when child is smaller
-        // than parent element
-        Vertice temp = h->vertices[parent];
-        h->vertices[parent] = h->vertices[index];
+        // Troca quando o filho eh menor que o pai
+        Vertice temp = h->vertices[pai];
+        h->vertices[pai] = h->vertices[index];
         h->vertices[index] = temp;
 
-        // Recursively calling insertHelper
-        insertHelper(h, parent);
+        // Chamada recursiva da funcao
+        ajudaInserir(h, pai);
     }
 }
 
@@ -47,85 +40,71 @@ void minHeapify(Heap *h, int index)
     int direita = index * 2 + 2;
     int min = index;
 
-    // Checking whether our esquerda or child element
-    // is at direita index or not to avoid index error
+    // Verifica se os indices esquerda e direita estão dentro do escopo da heapp
     if (esquerda >= h->tamanho || esquerda < 0)
         esquerda = -1;
     if (direita >= h->tamanho || direita < 0)
         direita = -1;
 
-    // store esquerda or direita element in min if
-    // any of these is smaller that its parent
+    // Armazena os indices esquerda e direita caso seus elementos sejam menores que seu no pai
     if (esquerda != -1 && h->vertices[esquerda].distancia < h->vertices[min].distancia)
         min = esquerda;
     if (direita != -1 && h->vertices[direita].distancia < h->vertices[min].distancia)
         min = direita;
 
-    // Swapping the nodes
+    // Troca os vertices
     if (min != index)
     {
         Vertice temp = h->vertices[min];
         h->vertices[min] = h->vertices[index];
         h->vertices[index] = temp;
 
-        // recursively calling for their child elements
-        // to maintain min Heap
+        // Chamada recursiva para manter as propriedades da minheap
         minHeapify(h, min);
     }
 }
 
-Vertice extractMin(Heap *h)
+Vertice extraiMenor(Heap *h)
 {
-    Vertice deleteItem;
+    Vertice deletaItem;
     int i = 0;
     int indice = 0;
 
-    // Store the node in deleteItem that
-    // is to be deleted.
-    deleteItem = h->vertices[0];
+    // Armazena o vertice a ser deletado em deleta item
+    deletaItem = h->vertices[0];
 
-    // Replace the deleted node with the last node
+    // Substitui o vertice a ser deletado pelo ultimo vertice
     h->vertices[0] = h->vertices[h->tamanho - 1];
 
-    // Decrement the size of Heap
+    // Diminui o tamanho da heap
     h->tamanho--;
 
-    // Call minHeapify_top_down for 0th index
-    // to maintain the Heap property
+    // Chamada recursiva para manter as propriedades da minheap
     minHeapify(h, 0);
-    return deleteItem;
+    return deletaItem;
 }
 
-// Define a insert function
-void insert(Heap *h, Vertice data)
+void insere(Heap *h, Vertice data)
 {
 
-    // Checking if Heap is full or not
+    // Verifica se a heap esta cheia
     if (h->tamanho < h->capacidade)
     {
-        // Inserting data into an array
+        // insere o elemento dentro da heap
         h->vertices[h->tamanho] = data;
-        // Calling insertHelper function
-        insertHelper(h, h->tamanho);
-        // Incrementing size of array
+
+        ajudaInserir(h, h->tamanho);
+        // Aumenta o tamanho da heap
         h->tamanho++;
     }
+    // Se a heap estiver cheia aumenta sua capacidade
     else
     {
         h->capacidade = 2 * h->capacidade;
         h->vertices = (Vertice *)realloc((h->vertices), h->capacidade * sizeof(Vertice));
-        insert(h, data);
-    }
-}
 
-void printHeap(Heap *h)
-{
-
-    for (int i = 0; i < h->tamanho; i++)
-    {
-        printf("%d ", h->vertices[i].id);
+        insere(h, data);
     }
-    printf("\n");
 }
 
 void destroiHeap(Heap *h)
@@ -134,28 +113,7 @@ void destroiHeap(Heap *h)
     free(h);
 }
 
-int pesquisaHeap(Heap *h, int id)
-{
-    int i;
-    for (i = 0; i < h->tamanho; i++)
-    {
-        if (id == h->vertices[i].id)
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
-void imprimeHeap(Heap *h)
-{
-    for (int i = 0; i < h->tamanho; i++)
-    {
-        printf("%d  %lld", h->vertices[i].id, h->vertices[i].distancia);
-    }
-}
-
-bool getSizeHeap(Heap *heap)
+bool heapVazia(Heap *heap)
 {
     if (heap->tamanho == 0)
     {

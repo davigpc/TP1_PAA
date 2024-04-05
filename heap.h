@@ -18,24 +18,14 @@ typedef struct Heap
 	int capacidade;
 } Heap;
 
-Heap *criaHeapVazia(int);
+Heap *criaHeapVazia(int capacidade);
 
-void insert(Heap *, Vertice);
+Vertice extraiMenor(Heap *h);
 
-Vertice extractMin(Heap *);
+void insere(Heap *h, Vertice data);
 
-void insertHelper(Heap *, int);
+void destroiHeap(Heap *h);
 
-void minHeapify(Heap *, int);
-
-void destroiHeap(Heap *);
-
-int pesquisaHeap(Heap *, int);
-
-void imprimeHeap(Heap *);
-
-bool getSizeHeap(Heap *);
-
-void insereFihos(Grafo *, Vertice, Heap *);
+bool heapVazia(Heap *heap);
 
 #endif

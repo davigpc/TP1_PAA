@@ -6,44 +6,29 @@
 #include "heap.h"
 #include "tempo.h"
 
-/*                    inicializaGrafo (TipoGrafo* grafo, int numvertices): Cria um grafo com n vertices.
-
-    Aloca espaco para o vetor de apontadores de listas de adjacencias e,
-    para cada vertice, inicializa o apontador de sua lista de adjacencia.
-    Retorna true se inicializou com sucesso e false caso contrario.
-
-
-    vertices vao de 1 a numvertices.
-*/
-
 Grafo *inicializaGrafo(int numVertices, int numArestas, int numMenoresCaminhos)
 {
-
     Grafo *grafo = (Grafo *)calloc(1, sizeof(Grafo));
 
     grafo->numVertices = numVertices;
 
     grafo->listaAdj = (Apontador *)calloc(numVertices, sizeof(Apontador));
 
-    // for num vert
-
     grafo->numArestas = numArestas;
 
     grafo->numMenoresCaminhos = numMenoresCaminhos;
-
-    // calloc ja inicializa com zeros.... nao precisa inicializar grafo->listaAdj[i]
 
     return grafo;
 }
 
 bool verificaValidadeVertice(int v, Grafo *grafo)
 {
+    // Verifica se o indice v esta dentro do escopo
     if (v > grafo->numVertices)
     {
         fprintf(stderr, "ERRO: Numero do vertice (%d) maior que o numero total de vertices (%d).\n", v, grafo->numVertices);
         return false;
     }
-
     if (v < 0)
     {
         fprintf(stderr, "ERRO: Numero do vertice (%d) deve ser positivo.\n", v);
@@ -52,137 +37,28 @@ bool verificaValidadeVertice(int v, Grafo *grafo)
 
     return true;
 }
-bool listaAdjVazia(int v, Grafo *grafo)
-{
-
-    if (!verificaValidadeVertice(v, grafo))
-        return false;
-
-    return (grafo->listaAdj[v] == NULL);
-}
-
-Apontador proxListaAdj(int v, Grafo *grafo, Apontador atual)
-{
-
-    if (atual == NULL)
-    {
-        fprintf(stderr, "atual == NULL\n");
-        return VERTICE_INVALIDO;
-    }
-    return (atual->prox);
-}
 
 void insereAresta(int v1, int v2, Peso peso, Grafo *grafo)
 {
-
     Apontador p;
 
     if (!(verificaValidadeVertice(v1, grafo) && verificaValidadeVertice(v2, grafo)))
     {
         return;
     }
+    // Aloca memoria para a nova aresta
     if (!(p = (Apontador)calloc(1, sizeof(Aresta))))
     {
         fprintf(stderr, "ERRO: Falha na alocacao de memoria na funcao insereAresta\n");
         return;
     }
+    // v2 eh um vertice adjacente a v1
     p->vdestino = v2;
     p->peso = peso;
-    p->prox = grafo->listaAdj[v1]; // insere no inicio
+    // Aponta para o que antes estava na primeira posicao
+    p->prox = grafo->listaAdj[v1];
+    // A aresta assume a primeira posicao
     grafo->listaAdj[v1] = p;
-}
-
-bool removeAresta(int v1, int v2, Grafo *grafo)
-{
-
-    Apontador q, anterior;
-
-    if (!(verificaValidadeVertice(v1, grafo) && verificaValidadeVertice(v2, grafo)))
-    {
-        return ARESTA_NULA;
-    }
-
-    q = grafo->listaAdj[v1];
-
-    while ((q != NULL) && (q->vdestino != v2))
-    {
-        anterior = q;
-        q = q->prox;
-    }
-
-    if (q != NULL)
-    {
-        if (grafo->listaAdj[v1] == q)
-        {
-            grafo->listaAdj[v1] = q->prox;
-            free(q);
-            q = NULL;
-        }
-        else
-        {
-            anterior->prox = q->prox;
-            free(q);
-            q = NULL;
-            return true;
-        }
-    }
-
-    return false;
-}
-
-Apontador primeiroListaAdj(int v, Grafo *grafo)
-{
-    return (grafo->listaAdj[v]);
-}
-
-bool existeAresta(int v1, int v2, Grafo *grafo)
-{
-
-    Apontador q;
-
-    if (!(verificaValidadeVertice(v1, grafo) && verificaValidadeVertice(v2, grafo)))
-    {
-        return false;
-    }
-
-    q = grafo->listaAdj[v1];
-
-    while ((q != NULL) && (q->vdestino != v2))
-    {
-        q = q->prox;
-    }
-
-    if (q != NULL)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-Apontador encontraAresta(int v1, int v2, Grafo *grafo)
-{
-
-    Apontador q;
-
-    if (!(verificaValidadeVertice(v1, grafo) && verificaValidadeVertice(v2, grafo)))
-    {
-        return NULL;
-    }
-
-    q = grafo->listaAdj[v1];
-
-    while ((q != NULL) && (q->vdestino != v2))
-    {
-        q = q->prox;
-    }
-
-    if (q != NULL)
-    {
-        return q;
-    }
-
-    return NULL;
 }
 
 void liberaGrafo(Grafo *grafo)
@@ -193,20 +69,14 @@ void liberaGrafo(Grafo *grafo)
 
     for (v = 0; v < grafo->numVertices; v++)
     {
-
         while ((p = grafo->listaAdj[v]) != NULL)
         {
-
             grafo->listaAdj[v] = p->prox;
             p->prox = NULL;
+            // Libera as arestas asjacentes a v
             free(p);
         }
     }
-
-    // for (int i = 0; i < grafo->numVertices + 1; i++)
-    // {
-    //     free(grafo->listaAdj[i]);
-    // }
 
     grafo->numVertices = 0;
     free(grafo->listaAdj);
@@ -216,39 +86,12 @@ void liberaGrafo(Grafo *grafo)
     grafo = NULL;
 }
 
-void imprimeGrafo(char *nomearq, Grafo *grafo)
-{
-
-    FILE *fp;
-    int v;
-    Apontador p;
-
-    fp = fopen(nomearq, "w");
-
-    if (fp == NULL)
-    {
-        fprintf(stderr, "ERRO: falha ao abrir arquivo.\n");
-        return;
-    }
-
-    for (v = 1; v <= grafo->numVertices; v++)
-    {
-        p = grafo->listaAdj[v];
-        while (p != NULL)
-        {
-            fprintf(fp, "%d ---> %d\n", v, p->vdestino);
-            p = p->prox;
-        }
-    }
-}
-
-Grafo *leGrafo(FILE * nomearq)
+Grafo *leGrafo(FILE *nomearq)
 {
 
     int numVertices, numArestas, numMenoresCaminhos;
     int v1, v2;
     Peso peso;
-
 
     if (nomearq == NULL)
     {
@@ -262,21 +105,26 @@ Grafo *leGrafo(FILE * nomearq)
         return (NULL);
     }
 
-    if(numVertices < 2 || numVertices > 100000){
+    // Verifica se os elementos estao dentro dos escopos definidos pelo trabalho
+    if (numVertices < 2 || numVertices > 100000)
+    {
         printf("ERRO: Numero de vertices invalido.\n");
         return (NULL);
     }
 
-    if(numArestas < 1 || numArestas > 200000){
+    if (numArestas < 1 || numArestas > 200000)
+    {
         printf("ERRO: Numero de arestas invalido.\n");
         return (NULL);
     }
 
-    if(numMenoresCaminhos < 1 || numMenoresCaminhos > 10){
+    if (numMenoresCaminhos < 1 || numMenoresCaminhos > 10)
+    {
         printf("ERRO: Numero de menores caminhos invalido.\n");
         return (NULL);
     }
 
+    // Commeca a contar o tempo
     tempo tempoInicio = tempoAtual();
 
     Grafo *grafo = inicializaGrafo(numVertices, numArestas, numMenoresCaminhos);
@@ -290,6 +138,7 @@ Grafo *leGrafo(FILE * nomearq)
         insereAresta(v1 - 1, v2 - 1, peso, grafo);
     }
 
+    // Para de contar o tempo
     tempo tempoFinal = tempoAtual();
 
     printf("Tempo de leitura:\n");
@@ -298,21 +147,26 @@ Grafo *leGrafo(FILE * nomearq)
     return grafo;
 }
 
-Peso obtemPesoAresta(int v1, int v2, Grafo *grafo)
+void insereAdjacentes(Grafo *grafo, Vertice pai, Heap *heap)
 {
-    Apontador p;
+    int indicePai = pai.id;
+    Vertice filho;
+    Apontador q;
 
-    p = encontraAresta(v1, v2, grafo);
+    // q = a vertice pai
+    q = grafo->listaAdj[indicePai];
 
-    if (p == NULL)
+    while (q != NULL)
     {
-        fprintf(stderr, "ERRO: numero de argumentos de entrada invalido.\n");
-        return (ARESTA_NULA);
+        filho.id = q->vdestino;
+        // tecnica de relaxamento
+        filho.distancia = q->peso + pai.distancia;
+
+        // Insere os adjacentes ao vertice pai
+        insere(heap, filho);
+        q = q->prox;
     }
-
-    return (p->peso);
 }
-
 
 Peso *eppstein(Grafo *grafo)
 {
@@ -320,34 +174,44 @@ Peso *eppstein(Grafo *grafo)
     int numMenoresCaminhos = grafo->numMenoresCaminhos;
 
     Heap *minHeap = criaHeapVazia(numVertices);
+    // vetor para armazenar quantas vezes um vertice ja saiu da heap
     int *contadores = calloc((numVertices), sizeof(int));
 
+    // Vetor para armazenar os pesos dos menores caminhos
     Peso *menoresCaminhos = calloc(numMenoresCaminhos, sizeof(Peso));
+    // Indice para o vetor dos menores caminhos
     int indiceMenores = 0;
 
     Vertice atual;
+    // Vertice que corresponde ao vertice de inicio
     Vertice raiz;
     raiz.id = 0;
     raiz.distancia = 0;
 
-    insert(minHeap, raiz);
+    // Insere o primeiro vertice na fila de prioridade
+    insere(minHeap, raiz);
 
+    // Enquanto o vertice de destino não for visitado k vezes
     while (contadores[numVertices - 1] < numMenoresCaminhos)
     {
-        if (getSizeHeap(minHeap))
+        if (heapVazia(minHeap))
         {
             break;
         }
 
-        atual = extractMin(minHeap);
+        // Vertice que esta sendo analisado = o vertice que tem menor distancia ate o vertice inicial
+        atual = extraiMenor(minHeap);
 
+        // Se o vertice ja foi visitado k vezes analisa o proximo vertice da fila
         if (contadores[atual.id] == numMenoresCaminhos)
         {
             continue;
         }
 
+        // Aumenta o contador do vertice pois ele acabou de ser visitado
         contadores[atual.id]++;
 
+        // Se o vertice que esta sendo analisado for o vertice final do caminho encontramos um menor caminho ate ele
         if (atual.id == numVertices - 1)
         {
             menoresCaminhos[indiceMenores] = atual.distancia;
@@ -355,7 +219,8 @@ Peso *eppstein(Grafo *grafo)
             continue;
         }
 
-        insereFihos(grafo, atual, minHeap);
+        // insere todos os adjacentes ao vertice atual na heap
+        insereAdjacentes(grafo, atual, minHeap);
     }
 
     destroiHeap(minHeap);
@@ -365,45 +230,26 @@ Peso *eppstein(Grafo *grafo)
     return menoresCaminhos;
 }
 
-void insereFihos(Grafo *grafo, Vertice pai, Heap *heap)
-{
-    int indicePai = pai.id;
-    Vertice filho;
-    Apontador q;
-
-    q = grafo->listaAdj[indicePai];
-
-    while (q != NULL)
-    {
-        filho.id = q->vdestino;
-        filho.distancia = q->peso + pai.distancia;
-
-        insert(heap, filho);
-        q = q->prox;
-    }
-
-}
-
 void imprimeMenoresCaminhos(FILE *nomearqEscrita, Grafo *grafo)
 {
+    // Comeca a contar o tempo
     tempo tempoInicio = tempoAtual();
 
     Peso *menoresCaminhos = eppstein(grafo);
 
     tempo tempoFinal = tempoAtual();
+    // Termina de contar o tempo
 
     double tempoTotal = tempoDecorrido(tempoInicio.tv, tempoFinal.tv);
 
     printf("Tempo de execucao:\n");
     imprimeTempos(tempoInicio, tempoFinal);
 
-
     if (nomearqEscrita == NULL)
     {
         fprintf(stderr, "ERRO: falha ao abrir arquivo.\n");
         return;
     }
-
 
     for (int i = 0; i < grafo->numMenoresCaminhos; i++)
     {
@@ -412,5 +258,4 @@ void imprimeMenoresCaminhos(FILE *nomearqEscrita, Grafo *grafo)
     fprintf(nomearqEscrita, "\n");
 
     free(menoresCaminhos);
-
 }

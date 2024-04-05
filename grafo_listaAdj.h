@@ -7,7 +7,6 @@
 
 #include "tempo.h"
 
-
 #define VERTICE_INVALIDO NULL
 #define ARESTA_NULA -1
 #define PESO_MAXIMO 100000000000001
@@ -35,35 +34,10 @@ typedef struct
 
 } Grafo;
 
-Grafo *inicializaGrafo(int, int, int);
+void liberaGrafo(Grafo *grafo);
 
-bool verificaValidadeVertice(int, Grafo *);
+Grafo *leGrafo(FILE *nomearq);
 
-bool listaAdjVazia(int, Grafo *);
-
-Apontador proxListaAdj(int, Grafo *, Apontador);
-
-void insereAresta(int, int, Peso, Grafo *);
-
-bool removeAresta(int, int, Grafo *);
-
-Apontador primeiroListaAdj(int, Grafo *);
-
-bool existeAresta(int, int, Grafo *);
-
-Apontador encontraAresta(int, int, Grafo *);
-
-void liberaGrafo(Grafo *);
-
-void imprimeGrafo(char *, Grafo *);
-
-Grafo *leGrafo(FILE *);
-
-Peso obtemPesoAresta(int, int, Grafo *);
-
-Peso *eppstein(Grafo *);
-
-void imprimeMenoresCaminhos(FILE *, Grafo *);
-
+void imprimeMenoresCaminhos(FILE *nomearqEscrita, Grafo *grafo);
 
 #endif
