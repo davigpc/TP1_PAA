@@ -36,7 +36,7 @@ typedef struct
 
 void liberaGrafo(Grafo *grafo);
 
-Grafo *leGrafo(FILE *nomearq);
+Grafo *preencheGrafo(FILE *nomearq);
 
 void imprimeMenoresCaminhos(FILE *nomearqEscrita, Grafo *grafo);
 

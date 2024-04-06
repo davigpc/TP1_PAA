@@ -86,7 +86,7 @@ void liberaGrafo(Grafo *grafo)
     grafo = NULL;
 }
 
-Grafo *leGrafo(FILE *nomearq)
+Grafo *preencheGrafo(FILE *nomearq)
 {
 
     int numVertices, numArestas, numMenoresCaminhos;

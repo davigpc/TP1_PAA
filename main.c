@@ -37,7 +37,7 @@ int main(int argc, char *argv[2])
     }
 
     // Inicializa o grafo e o preenche
-    Grafo *grafo = leGrafo(input_file);
+    Grafo *grafo = preencheGrafo(input_file);
 
     if (grafo == NULL)
     {
